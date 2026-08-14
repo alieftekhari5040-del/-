@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>برنامه‌ی روزانه — صفر تا قله</title>
+<meta name="description" content="برنامه‌ریز روزانه‌ی شخصی، کاملاً آفلاین و تک‌فایله" />
+
+<!-- ============================================================
+     فونت وزیرمتن (اختیاری/آفلاین)
+     اگر فایل Vazirmatn.woff2 کنار همین HTML یا در پوشه‌ی assets
+     باشد استفاده می‌شود؛ در غیر این صورت فونت سیستمی فال‌بک می‌شود.
+     هیچ درخواست شبکه‌ای انجام نمی‌شود.
+     ============================================================ -->
+<style>
+@font-face{
+  font-family:'Vazirmatn';
+  src:url('Vazirmatn.woff2') format('woff2'),
+      url('assets/Vazirmatn.woff2') format('woff2');
+  font-weight:100 900;
+  font-display:swap;
+}
+
+/* ===================== متغیرهای طراحی ===================== */
+:root{
+  --bg:#05030f;
+  --card-1:#181142;
+  --card-2:#120c30;
+  --line:#372a75;
+  --hairline:rgba(139,92,246,.18);
+  --violet:#8b5cf6;
+  --violet-2:#a78bfa;
+  --red:#ff4d5c;
+  --blue:#9db4ff;
+  --txt:#e9e6ff;
+  --muted:#8b85b8;
+  --radius-card:16px;
+  --radius-frame:26px;
+  --glow:0 0 0 1px rgba(139,92,246,.18), 0 0 26px rgba(139,92,246,.13), inset 0 0 30px rgba(139,92,246,.07);
+  --font:'Vazirmatn', 'IRANSans', 'Segoe UI', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--font);
+  font-size:14px;
+  line-height:1.9;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* هاله‌های بنفش محیطی */
+body::before,body::after{
+  content:"";position:fixed;z-index:0;pointer-events:none;border-radius:50%;
+  filter:blur(90px);opacity:.5;
+}
+body::before{width:52vw;height:52vw;top:-18vw;right:-12vw;background:radial-gradient(circle,#5b2ea8 0%,transparent 70%)}
+body::after{width:46vw;height:46vw;bottom:-16vw;left:-10vw;background:radial-gradient(circle,#3b2a8f 0%,transparent 70%)}
+
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.85}
+
+/* ===================== قاب بیرونی ===================== */
+.shell{position:relative;z-index:1;max-width:1180px;margin:26px auto;padding:0 16px}
+
+.frame{
+  position:relative;
+  border-radius:var(--radius-frame);
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(24,17,66,.92),rgba(10,7,28,.96));
+  padding:26px;
+  animation:breathe 6s ease-in-out infinite;
+  backdrop-filter:blur(6px);
+}
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 0 1px rgba(139,92,246,.25), 0 0 40px rgba(139,92,246,.16), inset 0 0 60px rgba(139,92,246,.05)}
+  50%{box-shadow:0 0 0 1px rgba(139,92,246,.45), 0 0 78px rgba(139,92,246,.32), inset 0 0 70px rgba(139,92,246,.09)}
+}
+.frame.summit{animation:breathe-hard 2.6s ease-in-out infinite}
+@keyframes breathe-hard{
+  0%,100%{box-shadow:0 0 0 1px rgba(167,139,250,.5), 0 0 60px rgba(139,92,246,.35), inset 0 0 70px rgba(139,92,246,.12)}
+  50%{box-shadow:0 0 0 2px rgba(167,139,250,.75), 0 0 120px rgba(167,139,250,.5), inset 0 0 90px rgba(139,92,246,.18)}
+}
+
+/* ===================== هدر ===================== */
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.header .title-box{order:2;text-align:left}
+.header .brand-box{order:1;display:flex;align-items:center;gap:12px}
+
+h1{
+  font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1.4;
+  background:linear-gradient(180deg,#ffffff,#c9c2ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 30px rgba(139,92,246,.25);
+}
+.subtitle{color:var(--muted);font-size:12.5px}
+
+.brand{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  letter-spacing:.42em;font-size:13px;font-weight:600;color:#d9d4ff;
+  text-transform:uppercase;padding-inline-start:.42em;
+}
+.logo{display:flex;align-items:flex-end;gap:4px;height:26px}
+.logo i{display:block;width:4px;border-radius:2px;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.35)}
+.logo i:nth-child(1){height:14px}
+.logo i:nth-child(2){height:20px}
+.logo i:nth-child(3){height:26px;background:var(--violet);box-shadow:0 0 14px var(--violet)}
+
+/* ===================== نوار روزها + تاریخ ===================== */
+.daybar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-top:20px;padding:10px 12px;
+  border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(180deg,rgba(24,17,66,.75),rgba(18,12,48,.75));
+}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  font-family:var(--font);font-size:12.5px;color:#b9b2e8;cursor:pointer;
+  padding:5px 14px;border-radius:999px;border:1px solid rgba(139,92,246,.28);
+  background:rgba(139,92,246,.06);transition:.22s ease;
+}
+.chip:hover{border-color:var(--violet);color:#fff;transform:translateY(-1px)}
+.chip.today{border-color:var(--violet);color:#fff;background:rgba(139,92,246,.2);box-shadow:0 0 16px rgba(139,92,246,.45)}
+.chip.active{background:linear-gradient(180deg,#7c4ddb,#5b34ad);border-color:var(--violet-2);color:#fff;box-shadow:0 0 20px rgba(139,92,246,.55)}
+.datebox{display:flex;align-items:center;gap:8px;font-size:13px}
+.datebox .lbl{color:var(--muted)}
+.datebox .val{color:var(--blue);font-weight:700;letter-spacing:.4px}
+
+/* نوار پیشرفت */
+.progress-wrap{margin-top:14px;display:flex;align-items:center;gap:12px}
+.progress{flex:1;height:7px;border-radius:99px;background:rgba(139,92,246,.12);overflow:hidden;border:1px solid rgba(139,92,246,.2)}
+.progress span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#ff4d5c,#8b5cf6,#a78bfa);box-shadow:0 0 16px rgba(139,92,246,.6);transition:width .45s cubic-bezier(.4,0,.2,1)}
+.progress-txt{font-size:12px;color:var(--muted);min-width:120px;text-align:left}
+.progress-txt.done{color:var(--violet-2);font-weight:700;text-shadow:0 0 14px rgba(167,139,250,.6)}
+
+/* ===================== گرید اصلی ===================== */
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-top:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px}
+
+.card{
+  border:1px solid var(--line);border-radius:var(--radius-card);
+  background:linear-gradient(160deg,var(--card-1),var(--card-2));
+  box-shadow:var(--glow);
+  padding:16px;
+  transition:transform .25s ease, box-shadow .25s ease;
+  opacity:0;transform:translateY(14px);
+  animation:rise .6s cubic-bezier(.22,1,.36,1) forwards;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(167,139,250,.35), 0 10px 34px rgba(139,92,246,.24), inset 0 0 34px rgba(139,92,246,.09)}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.15s}
+.card:nth-child(3){animation-delay:.25s}
+
+/* عنوان بخش‌ها با میله‌ی قرمز درخشان */
+.sec-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:800;margin-bottom:12px}
+.sec-title::before{
+  content:"";width:4px;height:19px;border-radius:3px;background:var(--red);
+  box-shadow:0 0 12px var(--red),0 0 22px rgba(255,77,92,.55);flex:none;
+}
+.sec-title.blue{color:var(--blue);text-shadow:0 0 18px rgba(157,180,255,.35)}
+
+/* ===================== جدول برنامه ===================== */
+.thead{display:flex;gap:10px;padding:0 4px 8px;color:var(--muted);font-size:11.5px;border-bottom:1px solid var(--hairline)}
+.thead .c1{flex:1}
+.thead .c2{width:90px;text-align:center;flex:none}
+
+.trow{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--hairline);transition:background .18s ease}
+.trow:last-child{border-bottom:0}
+.trow:hover{background:rgba(139,92,246,.07)}
+
+input,textarea{
+  font-family:var(--font);color:var(--txt);background:transparent;border:0;outline:0;
+  font-size:13.5px;width:100%;padding:9px 6px;
+}
+input::placeholder,textarea::placeholder{color:rgba(139,133,184,.55)}
+input:focus,textarea:focus{background:rgba(139,92,246,.09);border-radius:8px}
+
+.trow .task{flex:1}
+.trow .time{width:90px;flex:none;text-align:center;color:var(--violet-2);font-weight:700;letter-spacing:.5px;
+  border-inline-start:1px solid var(--hairline)}
+
+/* ===================== اولویت کارها ===================== */
+.pr-row{display:flex;align-items:center;gap:10px;padding:3px 0;border-bottom:1px dashed rgba(139,92,246,.16)}
+.pr-row:last-child{border-bottom:0}
+.pr-row .line{flex:1;transition:opacity .25s ease}
+
+/* چک‌باکس سفارشی */
+.cb{
+  appearance:none;-webkit-appearance:none;flex:none;
+  width:20px;height:20px;border-radius:6px;cursor:pointer;
+  border:2px solid var(--violet);background:rgba(139,92,246,.08);
+  position:relative;transition:.2s ease;padding:0;
+}
+.cb:hover{box-shadow:0 0 12px rgba(139,92,246,.5)}
+.cb::after{
+  content:"";position:absolute;inset:0;margin:auto;
+  width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;
+  transform:rotate(45deg) scale(0) translateY(-1px);transform-origin:center;
+  transition:transform .22s cubic-bezier(.3,1.6,.5,1);
+}
+.cb:checked{background:var(--violet);box-shadow:0 0 16px rgba(139,92,246,.65)}
+.cb:checked::after{transform:rotate(45deg) scale(1) translateY(-1px)}
+.cb.red{border-color:var(--red);background:rgba(255,77,92,.1)}
+.cb.red:hover{box-shadow:0 0 12px rgba(255,77,92,.55)}
+.cb.red:checked{background:var(--red);box-shadow:0 0 16px rgba(255,77,92,.7)}
+/* خط خوردن متن وقتی چک‌باکسِ همان ردیف تیک می‌خورد
+   (چک‌باکس بعد از متن است، پس از :has و کلاس کمکی JS استفاده می‌کنیم) */
+.pr-row.done .line,.pill.done .note{text-decoration:line-through;opacity:.45}
+.pr-row:has(.cb:checked) .line,.pill:has(.cb:checked) .note{text-decoration:line-through;opacity:.45}
+
+/* ===================== اهداف امروز ===================== */
+.goals{border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:rgba(5,3,15,.35)}
+.goals input{border-bottom:1px solid var(--hairline);border-radius:0}
+.goals input:last-child{border-bottom:0}
+.goals input:focus{border-radius:8px 8px 0 0}
+
+/* ===================== اولویت امروز (قرص‌ها) ===================== */
+.pill{
+  display:flex;align-items:center;gap:10px;margin-bottom:9px;
+  padding:8px 10px;border-radius:12px;
+  border:1px solid rgba(139,92,246,.28);background:rgba(139,92,246,.07);
+  transition:.22s ease;
+}
+.pill:last-child{margin-bottom:0}
+.pill:hover{border-color:var(--violet);background:rgba(139,92,246,.13);box-shadow:0 0 18px rgba(139,92,246,.18)}
+.pill .ico{flex:none;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+  background:rgba(139,92,246,.16);color:var(--violet-2)}
+.pill .ico svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.pill .name{flex:none;font-size:12.5px;font-weight:700;color:#cfc8ff;min-width:96px}
+.pill .note{flex:1;border-bottom:1px dashed rgba(139,92,246,.4);border-radius:0;font-size:12.5px;padding:4px 6px}
+
+/* ===================== درس‌های امروز ===================== */
+.lessons{margin-top:16px}
+.ruled{
+  width:100%;min-height:132px;resize:vertical;
+  line-height:33px;padding:6px 10px;border-radius:12px;
+  border:1px solid var(--line);background:
+    repeating-linear-gradient(to bottom,transparent 0 32px,rgba(139,92,246,.16) 32px 33px),
+    rgba(5,3,15,.35);
+}
+.ruled:focus{border-color:var(--violet);box-shadow:0 0 22px rgba(139,92,246,.2)}
+
+/* ===================== فوتر ===================== */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-top:20px;padding-top:14px;border-top:1px solid var(--hairline);
+}
+.footer .f-left{order:3;color:var(--muted);font-size:12px}
+.footer .f-mid{order:2;display:flex;gap:8px}
+.footer .f-right{order:1;display:flex;align-items:center;gap:8px;font-size:12px;color:#cdc7ff;
+  font-family:'Segoe UI',system-ui,sans-serif;letter-spacing:.24em}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 10px var(--red)}50%{opacity:.45;box-shadow:0 0 20px var(--red)}}
+
+.ghost{
+  font-family:var(--font);cursor:pointer;font-size:12px;color:#b8b1e6;
+  padding:6px 14px;border-radius:9px;border:1px solid rgba(139,92,246,.3);background:transparent;
+  transition:.2s ease;
+}
+.ghost:hover{color:#fff;border-color:var(--violet);background:rgba(139,92,246,.15);box-shadow:0 0 16px rgba(139,92,246,.3)}
+
+/* توست */
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translate(-50%,26px);z-index:50;
+  background:linear-gradient(160deg,#221856,#140d38);border:1px solid var(--violet);
+  color:#efeaff;padding:9px 20px;border-radius:12px;font-size:12.5px;
+  box-shadow:0 0 30px rgba(139,92,246,.45);opacity:0;pointer-events:none;transition:.3s ease;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ===================== ریسپانسیو ===================== */
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .shell{margin:12px auto;padding:0 10px}
+  .frame{padding:16px;border-radius:20px}
+  h1{font-size:23px}
+  .header{gap:12px}
+  .footer{justify-content:center;text-align:center}
+  .progress-txt{min-width:auto}
+}
+
+/* ===================== چاپ (تم روشن) ===================== */
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;color:#111}
+  body::before,body::after,#stars,.toast{display:none!important}
+  .shell{margin:0;max-width:100%;padding:0}
+  .frame{border:1px solid #bbb;box-shadow:none;animation:none;background:#fff;padding:10px;border-radius:10px}
+  .card{background:#fff;border:1px solid #ccc;box-shadow:none;opacity:1;transform:none;animation:none}
+  h1{color:#111;-webkit-text-fill-color:#111;text-shadow:none}
+  .subtitle,.datebox .lbl,.footer .f-left,.thead{color:#555}
+  .brand,.footer .f-right,.datebox .val{color:#111}
+  .sec-title.blue{color:#1a3aa8;text-shadow:none}
+  input,textarea{color:#111}
+  .ruled{background:repeating-linear-gradient(to bottom,transparent 0 32px,#ddd 32px 33px);border-color:#ccc}
+  .daybar,.goals,.pill{border-color:#ccc;background:#fff}
+  .chip{color:#333;border-color:#bbb;background:#fff;box-shadow:none}
+  .chip.active,.chip.today{background:#eee;color:#000;box-shadow:none}
+  .cb{border-color:#666}
+  .cb:checked{background:#333}
+  .f-mid,.progress-wrap{display:none!important}
+  .logo i{background:#333}
+  .logo i:nth-child(3){background:#666;box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="shell">
+  <div class="frame" id="frame">
+
+    <!-- ============ هدر ============ -->
+    <header class="header">
+      <div class="title-box">
+        <h1>برنامه‌ی روزانه</h1>
+        <div class="subtitle">هر روز یک قدم جلوتر</div>
+      </div>
+      <div class="brand-box">
+        <span class="brand" id="brandTop">MY BRAND</span>
+        <span class="logo"><i></i><i></i><i></i></span>
+      </div>
+    </header>
+
+    <!-- ============ روزهای هفته + تاریخ ============ -->
+    <div class="daybar">
+      <div class="chips" id="chips"></div>
+      <div class="datebox">
+        <span class="lbl">تاریخ:</span>
+        <span class="val" id="dateVal">—</span>
+      </div>
+    </div>
+
+    <!-- ============ نوار پیشرفت ============ -->
+    <div class="progress-wrap">
+      <div class="progress"><span id="bar"></span></div>
+      <div class="progress-txt" id="barTxt">۰٪ از مسیر امروز</div>
+    </div>
+
+    <!-- ============ گرید اصلی ============ -->
+    <main class="grid">
+
+      <!-- ستون راست: جدول برنامه -->
+      <section class="col">
+        <div class="card">
+          <div class="sec-title blue">برنامه‌ی امروز</div>
+          <div class="thead"><div class="c1">شرح کار</div><div class="c2">ساعت</div></div>
+          <div id="schedule"></div>
+        </div>
+      </section>
+
+      <!-- ستون چپ -->
+      <aside class="col">
+        <div class="card">
+          <div class="sec-title">اولویت کارها</div>
+          <div id="priorities"></div>
+        </div>
+
+        <div class="card">
+          <div class="sec-title">اهداف امروز</div>
+          <div class="goals" id="goals"></div>
+        </div>
+
+        <div class="card">
+          <div class="sec-title">اولویت امروز</div>
+          <div id="pills"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- ============ درس‌های امروز ============ -->
+    <section class="lessons">
+      <div class="sec-title">درس‌هایی که امروز گرفتم</div>
+      <textarea class="ruled" id="lessons" data-k="lessons" placeholder="امروز چه چیزی یاد گرفتم؟"></textarea>
+    </section>
+
+    <!-- ============ فوتر ============ -->
+    <footer class="footer">
+      <div class="f-left" id="dayCounter">روز صفر تا قله · روز ۱</div>
+      <div class="f-mid">
+        <button class="ghost" id="btnPrint">چاپ</button>
+        <button class="ghost" id="btnExport">پشتیبان‌گیری</button>
+        <button class="ghost" id="btnImport">بازیابی</button>
+      </div>
+      <div class="f-right"><span class="dot"></span><span id="brandBottom">MY BRAND - DAILY</span></div>
+    </footer>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileIn" accept="application/json,.json" hidden />
+
+<script>
+/* ==========================================================
+   برنامه‌ریز روزانه — تک‌فایل، آفلاین، بدون وابستگی خارجی
+   ========================================================== */
+
+/* ---------- ۱) برند قابل شخصی‌سازی (فقط همین خط را عوض کن) ---------- */
+const BRAND = "MY BRAND";
+
+/* ---------- ۲) ثابت‌ها و ابزارها ---------- */
+const NS       = "planner:v1:";            // پیشوند کلیدهای localStorage
+const FIRST_K  = NS + "firstUse";          // تاریخ اولین استفاده
+const DAYS     = ["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"];
+const ROWS     = 12;                       // ردیف‌های جدول برنامه
+const GOALS    = 4;                        // خطوط اهداف
+const PRIOS    = 5;                        // ردیف‌های اولویت کارها
+
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/** تبدیل ارقام لاتین به فارسی */
+const fa = v => String(v).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+
+/** کلید پایدار تاریخ (میلادی، محلی) برای localStorage */
+const keyOf = d =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+/** ایندکس روز هفته‌ی ایرانی: شنبه = ۰ … جمعه = ۶ */
+const faDayIndex = d => (d.getDay() + 1) % 7;
+
+/** تاریخ شمسی خوانا با Intl (بدون کتابخانه‌ی خارجی) */
+function jalali(d){
+  try{
+    return new Intl.DateTimeFormat("fa-IR-u-ca-persian",
+      { year:"numeric", month:"long", day:"numeric" }).format(d);
+  }catch(e){
+    return fa(keyOf(d));   // فال‌بک در صورت نبود پشتیبانی
+  }
+}
+
+/** اختلاف روزها بین دو تاریخ (بدون ساعت) */
+function diffDays(a, b){
+  const x = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  const y = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.round((y - x) / 86400000);
+}
+
+const today = new Date();
+let current = new Date();          // روزی که در حال نمایش/ویرایش است
+
+/* ---------- ۳) ساخت داینامیک بخش‌ها ---------- */
+
+// جدول برنامه (۱۲ ردیف): متن پهن + ساعت باریک سمت چپ
+$("#schedule").innerHTML = Array.from({ length: ROWS }, (_, i) => `
+  <div class="trow">
+    <input class="task" data-k="task${i}" placeholder="${fa(i + 1)}." />
+    <input class="time" data-k="time${i}" placeholder="--:--" inputmode="numeric" maxlength="7" />
+  </div>`).join("");
+
+// اولویت کارها (۵ ردیف): چک‌باکس سمت چپ، اولی قرمز
+$("#priorities").innerHTML = Array.from({ length: PRIOS }, (_, i) => `
+  <div class="pr-row">
+    <input class="line" data-k="prio${i}" placeholder="اولویت ${fa(i + 1)}" />
+    <input type="checkbox" class="cb${i === 0 ? " red" : ""}" data-k="prioC${i}" aria-label="انجام شد" />
+  </div>`).join("");
+
+// اهداف امروز (۴ خط)
+$("#goals").innerHTML = Array.from({ length: GOALS }, (_, i) =>
+  `<input data-k="goal${i}" placeholder="هدف ${fa(i + 1)}" />`).join("");
+
+// اولویت امروز (۳ قرص آیکون‌دار)
+const ICONS = {
+  book: '<svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M20 16H6.5A2.5 2.5 0 0 0 4 18.5"/></svg>',
+  play: '<svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="M10.5 9.2l4.6 2.8-4.6 2.8z"/></svg>',
+  gym : '<svg viewBox="0 0 24 24"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg>'
+};
+const PILLS = [
+  { k:"study",  ico:"book", name:"مطالعه" },
+  { k:"growth", ico:"play", name:"تسک رشد فردی" },
+  { k:"gym",    ico:"gym",  name:"تمرین / بدنسازی" }
+];
+$("#pills").innerHTML = PILLS.map(p => `
+  <div class="pill">
+    <span class="ico">${ICONS[p.ico]}</span>
+    <span class="name">${p.name}</span>
+    <input class="note" data-k="${p.k}N" placeholder="یادداشت…" />
+    <input type="checkbox" class="cb" data-k="${p.k}C" aria-label="${p.name}" />
+  </div>`).join("");
+
+// برند
+$("#brandTop").textContent    = BRAND;
+$("#brandBottom").textContent = BRAND + " - DAILY";
+document.title = `برنامه‌ی روزانه — ${BRAND}`;
+
+/* ---------- ۴) چیپ‌های روز هفته ---------- */
+$("#chips").innerHTML = DAYS.map((d, i) =>
+  `<button class="chip" data-i="${i}" type="button">${d}</button>`).join("");
+
+/** تاریخِ روزِ i اُمِ هفته‌ی جاری (هفته‌ی شنبه‌محور) */
+function dateOfWeekday(i){
+  const base = new Date(today);
+  base.setDate(base.getDate() + (i - faDayIndex(today)));
+  return base;
+}
+
+$$(".chip").forEach(c => c.addEventListener("click", () => {
+  save();                                   // ذخیره‌ی روز قبلی
+  current = dateOfWeekday(+c.dataset.i);
+  render();
+  toast(`روز ${DAYS[+c.dataset.i]} باز شد`);
+}));
+
+/* ---------- ۵) ذخیره / بازیابی ---------- */
+const fields = () => $$("[data-k]");
+
+function save(){
+  const data = {};
+  fields().forEach(el => data[el.dataset.k] = el.type === "checkbox" ? el.checked : el.value);
+  const empty = Object.values(data).every(v => v === "" || v === false);
+  const key   = NS + keyOf(current);
+  empty ? localStorage.removeItem(key) : localStorage.setItem(key, JSON.stringify(data));
+}
+
+function load(){
+  let data = {};
+  try{ data = JSON.parse(localStorage.getItem(NS + keyOf(current)) || "{}"); }catch(e){}
+  fields().forEach(el => {
+    const v = data[el.dataset.k];
+    if (el.type === "checkbox") el.checked = !!v; else el.value = v || "";
+  });
+}
+
+let timer;
+const autosave = () => { clearTimeout(timer); timer = setTimeout(save, 300); };
+
+document.addEventListener("input",  e => { if (e.target.dataset.k) { autosave(); progress(); } });
+document.addEventListener("change", e => { if (e.target.dataset.k) { autosave(); progress(); } });
+window.addEventListener("beforeunload", save);
+
+/* ---------- ۶) نوار پیشرفت (۸ چک‌باکس) ---------- */
+function progress(){
+  const boxes = $$(".cb");
+  const done  = boxes.filter(b => b.checked).length;
+  const pct   = Math.round(done / boxes.length * 100);
+  $("#bar").style.width = pct + "%";
+  const full = pct === 100;
+  $("#barTxt").textContent = full ? "🏔 قله فتح شد!" : `${fa(pct)}٪ از مسیر امروز`;
+  $("#barTxt").classList.toggle("done", full);
+  $("#frame").classList.toggle("summit", full);
+
+  // فال‌بک خط‌خوردن برای مرورگرهای بدون پشتیبانی :has
+  boxes.forEach(b => b.closest(".pr-row, .pill")?.classList.toggle("done", b.checked));
+}
+
+/* ---------- ۷) رندر تاریخ، چیپ‌ها و شمارنده‌ی روز ---------- */
+function render(){
+  load();
+  progress();
+  $("#dateVal").textContent = jalali(current);
+
+  const ci = faDayIndex(current), ti = faDayIndex(today);
+  $$(".chip").forEach((c, i) => {
+    c.classList.toggle("active", i === ci);
+    c.classList.toggle("today",  i === ti && diffDays(dateOfWeekday(i), today) === 0);
+  });
+
+  // شمارنده‌ی روز از اولین استفاده
+  let first = localStorage.getItem(FIRST_K);
+  if (!first){ first = keyOf(today); localStorage.setItem(FIRST_K, first); }
+  const [y, m, d] = first.split("-").map(Number);
+  const n = diffDays(new Date(y, m - 1, d), current) + 1;
+  $("#dayCounter").textContent = `روز صفر تا قله · روز ${fa(Math.max(1, n))}`;
+}
+
+/* ---------- ۸) توست ---------- */
+let tT;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(tT); tT = setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+/* ---------- ۹) چاپ / پشتیبان‌گیری / بازیابی ---------- */
+$("#btnPrint").onclick = () => { save(); window.print(); };
+
+$("#btnExport").onclick = () => {
+  save();
+  const dump = { app:"daily-planner", brand:BRAND, version:1, exportedAt:new Date().toISOString(), days:{} };
+  for (let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i);
+    if (k.startsWith(NS)) dump.days[k.slice(NS.length)] = localStorage.getItem(k);
+  }
+  const url = URL.createObjectURL(new Blob([JSON.stringify(dump, null, 2)], { type:"application/json" }));
+  const a = Object.assign(document.createElement("a"), { href:url, download:`planner-backup-${keyOf(today)}.json` });
+  a.click(); URL.revokeObjectURL(url);
+  toast("فایل پشتیبان ذخیره شد");
+};
+
+$("#btnImport").onclick = () => $("#fileIn").click();
+$("#fileIn").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const dump = JSON.parse(r.result);
+      if (!dump.days) throw 0;
+      Object.entries(dump.days).forEach(([k, v]) => localStorage.setItem(NS + k, v));
+      render();
+      toast("اطلاعات بازیابی شد ✓");
+    }catch(err){ toast("فایل پشتیبان معتبر نیست"); }
+    e.target.value = "";
+  };
+  r.readAsText(f);
+};
+
+/* ---------- ۱۰) آسمان پرستاره‌ی متحرک ---------- */
+(function starfield(){
+  const cv = $("#stars"), ctx = cv.getContext("2d");
+  let stars = [], w, h;
+  const resize = () => {
+    w = cv.width  = innerWidth;
+    h = cv.height = innerHeight;
+    stars = Array.from({ length: Math.min(180, Math.round(w * h / 9000)) }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 1.1 + .25,
+      a: Math.random() * .6 + .2,
+      s: Math.random() * .035 + .012,
+      p: Math.random() * Math.PI * 2
+    }));
+  };
+  const tick = t => {
+    ctx.clearRect(0, 0, w, h);
+    for (const st of stars){
+      st.y -= st.s;                       // حرکت آرام رو به بالا
+      if (st.y < -2){ st.y = h + 2; st.x = Math.random() * w; }
+      const tw = st.a * (.65 + .35 * Math.sin(t / 900 + st.p));   // چشمک
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(200,190,255,${tw})`;
+      ctx.arc(st.x, st.y, st.r, 0, 6.283);
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  };
+  addEventListener("resize", resize);
+  resize(); requestAnimationFrame(tick);
+})();
+
+/* ---------- ۱۱) شروع ---------- */
+render();
+</script>
+</body>
+</html>
