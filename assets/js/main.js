@@ -1,121 +1,31 @@
 /* ═══════════════════════════════════════════════════════════
-   VITTO — Season Planner · interactions
+   THE ASCENT BLUEPRINT — برنامه روزانه · interactions
    ═══════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
 
-  /* ── Helpers ──────────────────────────────────────────── */
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-  /* ── Planner data ──────────────────────────────────────── */
-  const PLANNER = {
-    spring: {
-      name: "Spring",
-      range: "March · April · May",
-      accent: "#b7c9a8",
-      headline: "Clear the space, <em>let things grow.</em>",
-      months: [
-        { m: "Mar", d: "Spring reset — declutter your space, wardrobe and calendar." },
-        { m: "Apr", d: "Wardrobe switch: light layers, soft hues, airy textures." },
-        { m: "May", d: "Slow mornings, early blooms and one fresh weekly ritual." }
-      ]
-    },
-    summer: {
-      name: "Summer",
-      range: "June · July · August",
-      accent: "#d9a441",
-      headline: "Longest light, <em>lived slowly.</em>",
-      months: [
-        { m: "Jun", d: "Extend evenings outdoors — plan sunset rituals, not schedules." },
-        { m: "Jul", d: "Peak golden hour: escapes, swims and open-air meals." },
-        { m: "Aug", d: "Harvest warmth — savor late summer with intention." }
-      ]
-    },
-    autumn: {
-      name: "Autumn",
-      range: "September · October · November",
-      accent: "#a04d2b",
-      headline: "Gather, reflect, <em>layer warmly.</em>",
-      months: [
-        { m: "Sep", d: "Gentle shift — introduce layers and warm tones to your days." },
-        { m: "Oct", d: "The cozy season: candlelit evenings, amber walks, slow food." },
-        { m: "Nov", d: "Gather & give — plan around gratitude and small gatherings." }
-      ]
-    },
-    winter: {
-      name: "Winter",
-      range: "December · January · February",
-      accent: "#cfdde8",
-      headline: "Rest deeply, <em>begin softly.</em>",
-      months: [
-        { m: "Dec", d: "Wrap in warmth — gatherings, glow and generous pauses." },
-        { m: "Jan", d: "New year, new plan: set twelve months of clear intentions." },
-        { m: "Feb", d: "Rest deeply — stillness, low light and small quiet joys." }
-      ]
-    }
-  };
+  /* ── Persian (Jalali) date ────────────────────────────── */
+  const faDate = () => new Intl.DateTimeFormat("fa-IR", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  }).format(new Date());
 
-  const renderPlanner = (seasonKey) => {
-    const s = PLANNER[seasonKey];
-    const stage = $("#plannerStage");
-    if (!stage || !s) return;
+  const heroDate = $("#heroDate");
+  if (heroDate) heroDate.textContent = faDate();
 
-    stage.innerHTML = `
-      <div class="planner__panel is-active" style="--season-accent:${s.accent}">
-        <div>
-          <p class="planner__months">${s.range}</p>
-          <h3>${s.headline}</h3>
-          <p class="section-lead">The Vitto recommended rhythm for ${s.name.toLowerCase()} — three months, three focuses, one clear plan.</p>
-        </div>
-        <div class="planner__months-grid">
-          ${s.months.map(m => `
-            <div class="planner__month">
-              <b>${m.m}</b>
-              <p>${m.d}</p>
-            </div>`).join("")}
-        </div>
-      </div>`;
-  };
+  const planDate = $("#planDate");
+  if (planDate) planDate.value = faDate();
 
   /* ── Nav: scrolled state ──────────────────────────────── */
   const nav = $("#nav");
+  const toTop = $("#toTop");
   const onScrollNav = () => nav.classList.toggle("is-scrolled", window.scrollY > 24);
+  const onScrollToTop = () => toTop.classList.toggle("is-visible", window.scrollY > 700);
   onScrollNav();
 
-  /* ── Back to top ──────────────────────────────────────── */
-  const toTop = $("#toTop");
-  const onScrollToTop = () => {
-    const visible = window.scrollY > 700;
-    toTop.classList.toggle("is-visible", visible);
-  };
   toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-  /* ── Scroll handler (raf-throttled) ───────────────────── */
-  let ticking = false;
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      onScrollNav();
-      onScrollToTop();
-      heroParallax();
-      ticking = false;
-    });
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  /* ── Hero parallax ────────────────────────────────────── */
-  const heroMedia = $("#heroMedia");
-  const heroImg  = heroMedia ? $("img", heroMedia) : null;
-  const heroParallax = () => {
-    if (!heroImg) return;
-    const y = window.scrollY;
-    if (y < window.innerHeight * 1.2) {
-      heroImg.style.transform = `scale(1.06) translateY(${y * 0.22}px)`;
-    }
-  };
-  heroParallax();
 
   /* ── Mobile menu ──────────────────────────────────────── */
   const toggle = $("#navToggle");
@@ -133,8 +43,19 @@
     })
   );
 
+  /* ── Scroll (raf-throttled) ───────────────────────────── */
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      onScrollNav();
+      onScrollToTop();
+      ticking = false;
+    });
+  }, { passive: true });
+
   /* ── Reveal on scroll ─────────────────────────────────── */
-  const revealEls = $$(".reveal");
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -143,13 +64,13 @@
       }
     });
   }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-  revealEls.forEach((el, i) => {
+  $$(".reveal").forEach((el, i) => {
     el.style.setProperty("--d", `${Math.min(i % 4, 3) * 0.09}s`);
     io.observe(el);
   });
 
   /* ── Active nav link (section spy) ────────────────────── */
-  const sections = ["seasons", "planner", "lookbook", "contact"]
+  const sections = ["planner", "features", "design", "contact"]
     .map(id => document.getElementById(id)).filter(Boolean);
   const spy = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -166,12 +87,12 @@
       if (!entry.isIntersecting) return;
       const el = entry.target;
       const target = parseInt(el.dataset.count, 10) || 0;
-      const dur = 1400;
+      const dur = 1300;
       const t0 = performance.now();
       const tick = (now) => {
         const p = Math.min((now - t0) / dur, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased).toLocaleString("en-US");
+        el.textContent = Math.round(target * eased).toLocaleString("fa-IR");
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
@@ -180,22 +101,46 @@
   }, { threshold: 0.6 });
   $$(".stat__num").forEach(n => counterIO.observe(n));
 
-  /* ── Planner tabs ─────────────────────────────────────── */
-  const tabs = $$(".planner__tab");
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => {
-        t.classList.remove("is-active");
-        t.setAttribute("aria-selected", "false");
-      });
-      tab.classList.add("is-active");
-      tab.setAttribute("aria-selected", "true");
-      renderPlanner(tab.dataset.season);
-    });
-  });
-  renderPlanner("spring");
+  /* ── Planner: persist to localStorage ─────────────────── */
+  const PLAN_KEY = "ascent-daily-plan-v1";
+  const writables = $$(".plan__write");
+  const checks    = $$(".plan__check input");
 
-  /* ── Newsletter form (front-end demo) ─────────────────── */
+  const save = () => {
+    const data = {
+      date: planDate ? planDate.value : "",
+      writes: writables.map(el => el.innerHTML),
+      checks: checks.map(c => c.checked)
+    };
+    try { localStorage.setItem(PLAN_KEY, JSON.stringify(data)); } catch (e) { /* ignore */ }
+  };
+
+  const load = () => {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(PLAN_KEY) || "null"); } catch (e) { /* ignore */ }
+    if (!data) return;
+    if (data.date && planDate) planDate.value = data.date;
+    writables.forEach((el, i) => { if (data.writes && data.writes[i]) el.innerHTML = data.writes[i]; });
+    checks.forEach((c, i) => { if (data.checks && data.checks[i]) c.checked = data.checks[i]; });
+  };
+
+  writables.forEach(el => el.addEventListener("input", save));
+  checks.forEach(c => c.addEventListener("change", save));
+  if (planDate) planDate.addEventListener("change", save);
+
+  /* ── Planner: reset ───────────────────────────────────── */
+  $("#resetPlan").addEventListener("click", () => {
+    if (!confirm("برنامه امروز از اول پاک شود؟")) return;
+    writables.forEach(el => (el.innerHTML = ""));
+    checks.forEach(c => (c.checked = false));
+    if (planDate) planDate.value = faDate();
+    save();
+  });
+
+  /* ── Planner: print / PDF ─────────────────────────────── */
+  $("#printPlan").addEventListener("click", () => window.print());
+
+  /* ── Newsletter form ──────────────────────────────────── */
   const form = $("#newsletterForm");
   const note = $("#formNote");
   form.addEventListener("submit", (e) => {
@@ -203,15 +148,18 @@
     const email = $("#email").value.trim();
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
     if (!valid) {
-      note.textContent = "Please enter a valid email address.";
+      note.textContent = "لطفاً یک ایمیل معتبر وارد کن.";
       note.className = "contact__note is-err";
       return;
     }
-    note.textContent = "Welcome to the Vitto List — see you next season. 🍂";
+    note.textContent = "خوش آمدی به آسنت — اولین قدم را همین امروز بردار. 🏔️";
     note.className = "contact__note is-ok";
     form.reset();
   });
 
   /* ── Footer year ──────────────────────────────────────── */
   $("#year").textContent = new Date().getFullYear();
+
+  /* ── Init ─────────────────────────────────────────────── */
+  load();
 })();

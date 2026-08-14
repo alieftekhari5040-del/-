@@ -1,38 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vitto — Season Planner | Four Seasons, One Beautifully Planned Year</title>
-  <meta name="description" content="Vitto Season Planner — a curated, editorial guide to living beautifully through spring, summer, autumn and winter. Palettes, rituals and plans for every season." />
+  <title>THE ASCENT BLUEPRINT | برنامه روزانه — هر روز یک قدم جلوتر</title>
+  <meta name="description" content="برنامه روزانه آسنت — بلوپرینت روزانه‌ای برای اولویت‌بندی کارها، رشد فردی و حرکت از روز صفر تا قله. هر روز یک قدم جلوتر." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍂</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>" />
 </head>
 <body>
 
   <!-- ══════════════ NAVIGATION ══════════════ -->
   <header class="nav" id="nav">
     <div class="nav__inner container">
-      <a href="#home" class="nav__brand" aria-label="Vitto Season Planner — home">
-        <span class="nav__brand-name">VITTO<sup>®</sup></span>
-        <span class="nav__brand-tag">Season Planner</span>
+      <a href="#home" class="nav__brand">
+        <span class="nav__brand-mark">000</span>
+        <span class="nav__brand-text">
+          <b>THE ASCENT <i>BLUEPRINT</i></b>
+          <small>برنامه روزانه</small>
+        </span>
       </a>
 
-      <nav class="nav__menu" id="navMenu" aria-label="Primary">
-        <a href="#seasons" class="nav__link">Seasons</a>
-        <a href="#planner" class="nav__link">Planner</a>
-        <a href="#lookbook" class="nav__link">Lookbook</a>
-        <a href="#contact" class="nav__link">Contact</a>
-        <a href="#contact" class="nav__cta">Start Planning</a>
+      <nav class="nav__menu" id="navMenu" aria-label="منوی اصلی">
+        <a href="#planner" class="nav__link">برنامه روزانه</a>
+        <a href="#features" class="nav__link">چرا آسنت؟</a>
+        <a href="#design" class="nav__link">طراحی</a>
+        <a href="#contact" class="nav__link">تماس</a>
+        <a href="#planner" class="nav__cta">شروع برنامه‌ریزی</a>
       </nav>
 
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
+      <button class="nav__toggle" id="navToggle" aria-label="باز و بسته کردن منو" aria-expanded="false" aria-controls="navMenu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -41,274 +44,217 @@
   <main>
     <!-- ══════════════ HERO ══════════════ -->
     <section class="hero" id="home">
-      <div class="hero__media" id="heroMedia" aria-hidden="true">
-        <img src="assets/img/hero.jpg" alt="A landscape in four seasons — spring, summer, autumn, winter" />
-        <div class="hero__overlay"></div>
-      </div>
-
-      <div class="hero__content container">
-        <p class="eyebrow reveal">Vitto<sup>®</sup> — The Seasonal Edit</p>
-        <h1 class="hero__title reveal">
-          Four seasons.<br />
-          One beautifully<br />
-          <em>planned</em> year.
-        </h1>
-        <p class="hero__sub reveal">
-          From the first bloom of spring to the quiet hush of winter —
-          Vitto helps you plan every season in living color.
-          A curated guide to living well, all year round.
-        </p>
-        <div class="hero__actions reveal">
-          <a href="#seasons" class="btn btn--solid">Explore the Seasons</a>
-          <a href="#planner" class="btn btn--ghost">Open the Planner</a>
-        </div>
-      </div>
-
-      <div class="hero__scroll" aria-hidden="true">
-        <span>Scroll</span>
-        <i></i>
-      </div>
-    </section>
-
-    <!-- ══════════════ STATS STRIP ══════════════ -->
-    <section class="stats" aria-label="The year at a glance">
-      <div class="container stats__grid">
-        <div class="stat">
-          <span class="stat__num" data-count="4">0</span>
-          <span class="stat__label">Seasons</span>
-        </div>
-        <div class="stat">
-          <span class="stat__num" data-count="12">0</span>
-          <span class="stat__label">Months</span>
-        </div>
-        <div class="stat">
-          <span class="stat__num" data-count="52">0</span>
-          <span class="stat__label">Weeks</span>
-        </div>
-        <div class="stat">
-          <span class="stat__num" data-count="365">0</span>
-          <span class="stat__label">Days</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════ SEASONS ══════════════ -->
-    <section class="seasons" id="seasons">
-      <div class="container">
-        <header class="section-head reveal">
-          <p class="eyebrow">01 — The Seasonal Edit</p>
-          <h2 class="section-title">Every season has its own<br /><em>palette &amp; rhythm.</em></h2>
-          <p class="section-lead">
-            Spring blooms, summer glows, autumn grounds, winter rests.
-            Vitto translates each season's mood into a plan worth living by —
-            colors, rituals and intentions, curated twice a year.
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__grid container">
+        <div class="hero__content">
+          <p class="eyebrow reveal">THE ASCENT BLUEPRINT</p>
+          <h1 class="hero__title reveal">برنامه <em>روزانه</em><br />هر روز یک قدم جلوتر</h1>
+          <p class="hero__sub reveal">
+            یک صفحه، یک روز، یک قدم. اولویت‌هایت را مشخص کن، کارهایت را بنویس،
+            عادت‌های کوچک را بساز — و از «روز صفر» تا «قله» قدم‌به‌قدم پیش برو.
           </p>
-        </header>
+          <div class="hero__date reveal" id="heroDate"></div>
+          <div class="hero__actions reveal">
+            <a href="#planner" class="btn btn--solid">شروع برنامه‌ریزی امروز</a>
+            <a href="#design" class="btn btn--ghost">مشاهده طراحی اصلی</a>
+          </div>
+        </div>
+
+        <div class="hero__visual reveal" aria-hidden="true">
+          <div class="hero__mock">
+            <div class="mock__top">
+              <span class="mock__brand">THE ASCENT BLUEPRINT</span>
+              <span class="mock__mark">000</span>
+            </div>
+            <div class="mock__title">برنامه روزانه</div>
+            <div class="mock__tag">هر روز یک قدم جلوتر</div>
+            <div class="mock__dashes"></div>
+            <div class="mock__cols">
+              <div class="mock__col">
+                <div class="mock__head">اولویت کارها</div>
+                <div class="mock__head">اهداف امروز</div>
+                <div class="mock__head">اولویت امروز</div>
+                <div class="mock__check"><i></i> مطالعه</div>
+                <div class="mock__check"><i></i> رشد فردی</div>
+                <div class="mock__check"><i></i> تمرین / بدنسازی</div>
+              </div>
+              <div class="mock__col">
+                <div class="mock__head">برنامه امروز</div>
+                <div class="mock__head">درس‌هایی که امروز گرفتم</div>
+              </div>
+            </div>
+            <div class="mock__bar">
+              <span>روز صفر تا قله</span>
+              <b>@ THE ASCENT BLUEPRINT — DAILY</b>
+            </div>
+          </div>
+          <div class="hero__glow-ring" aria-hidden="true"></div>
+        </div>
       </div>
 
-      <!-- Spring -->
-      <article class="season season--spring">
-        <div class="season__media reveal">
-          <img src="assets/img/spring.jpg" alt="Cherry blossoms in a ceramic vase — spring" loading="lazy" />
-        </div>
-        <div class="season__body container">
-          <div class="season__content reveal">
-            <p class="season__no">Season 01</p>
-            <h3 class="season__title">Spring <em>— March to May</em></h3>
-            <p class="season__desc">
-              Fresh, light and full of promise. Soft petals, longer mornings and the
-              gentle art of beginning again — a season for clearing space and growing.
-            </p>
-            <ul class="season__list">
-              <li>Reset your space &amp; wardrobe</li>
-              <li>Embrace light, airy layering</li>
-              <li>Plan the season of new starts</li>
-            </ul>
-            <div class="palette" aria-label="Spring palette">
-              <span style="--c:#E8C5C0" title="Blush"></span>
-              <span style="--c:#B7C9A8" title="Sage"></span>
-              <span style="--c:#F3E9DC" title="Cream"></span>
-              <span style="--c:#8FA37E" title="Moss"></span>
-            </div>
-            <div class="chips">
-              <span>Bloom</span><span>Renew</span><span>Awaken</span><span>Grow</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Summer -->
-      <article class="season season--summer">
-        <div class="season__media reveal">
-          <img src="assets/img/summer.jpg" alt="Golden hour by the sea — summer" loading="lazy" />
-        </div>
-        <div class="season__body container">
-          <div class="season__content reveal">
-            <p class="season__no">Season 02</p>
-            <h3 class="season__title">Summer <em>— June to August</em></h3>
-            <p class="season__desc">
-              Golden, generous, alive. The longest light of the year invites slow
-              mornings, open water and warm nights — plan for presence over busyness.
-            </p>
-            <ul class="season__list">
-              <li>Chase golden hour, slowly</li>
-              <li>Plan escapes &amp; long swims</li>
-              <li>Savor meals outside</li>
-            </ul>
-            <div class="palette" aria-label="Summer palette">
-              <span style="--c:#D9A441" title="Gold"></span>
-              <span style="--c:#E9703F" title="Coral"></span>
-              <span style="--c:#2E6F8E" title="Azure"></span>
-              <span style="--c:#F7E8C9" title="Sand"></span>
-            </div>
-            <div class="chips">
-              <span>Glow</span><span>Swim</span><span>Travel</span><span>Feast</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Autumn -->
-      <article class="season season--autumn">
-        <div class="season__media reveal">
-          <img src="assets/img/autumn.jpg" alt="Misty forest in golden leaves — autumn" loading="lazy" />
-        </div>
-        <div class="season__body container">
-          <div class="season__content reveal">
-            <p class="season__no">Season 03</p>
-            <h3 class="season__title">Autumn <em>— September to November</em></h3>
-            <p class="season__desc">
-              Warm, grounded, richly textured. Amber light, harvested fields and the
-              slow return indoors — a season to gather, reflect and layer with intention.
-            </p>
-            <ul class="season__list">
-              <li>Welcome the cozy rituals</li>
-              <li>Layer textures &amp; warm tones</li>
-              <li>Gather friends around the table</li>
-            </ul>
-            <div class="palette" aria-label="Autumn palette">
-              <span style="--c:#A04D2B" title="Terracotta"></span>
-              <span style="--c:#7A7A4D" title="Olive"></span>
-              <span style="--c:#D9A04A" title="Amber"></span>
-              <span style="--c:#3E2F23" title="Cocoa"></span>
-            </div>
-            <div class="chips">
-              <span>Harvest</span><span>Reflect</span><span>Layer</span><span>Gather</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Winter -->
-      <article class="season season--winter">
-        <div class="season__media reveal">
-          <img src="assets/img/winter.jpg" alt="Snowy pines and a warm cabin — winter" loading="lazy" />
-        </div>
-        <div class="season__body container">
-          <div class="season__content reveal">
-            <p class="season__no">Season 04</p>
-            <h3 class="season__title">Winter <em>— December to February</em></h3>
-            <p class="season__desc">
-              Quiet, still, softly bright. The year folds inward for rest and warmth —
-              candlelight, deep sleep and the quiet planning of what comes next.
-            </p>
-            <ul class="season__list">
-              <li>Rest deeply, on purpose</li>
-              <li>Warm gatherings, soft glow</li>
-              <li>Set intentions for the new year</li>
-            </ul>
-            <div class="palette" aria-label="Winter palette">
-              <span style="--c:#2C3E50" title="Midnight"></span>
-              <span style="--c:#CFE0E8" title="Ice"></span>
-              <span style="--c:#A8B8C8" title="Frost"></span>
-              <span style="--c:#E9C46A" title="Ember"></span>
-            </div>
-            <div class="chips">
-              <span>Rest</span><span>Glow</span><span>Gather</span><span>Begin</span>
-            </div>
-          </div>
-        </div>
-      </article>
+      <a href="#planner" class="hero__scroll" aria-label="اسکرول به پایین">
+        <span>ببین چطور کار می‌کند</span>
+        <i></i>
+      </a>
     </section>
 
-    <!-- ══════════════ PLANNER ══════════════ -->
+    <!-- ══════════════ INTERACTIVE PLANNER ══════════════ -->
     <section class="planner" id="planner">
       <div class="container">
         <header class="section-head section-head--center reveal">
-          <p class="eyebrow">02 — The Vitto Planner</p>
-          <h2 class="section-title">Plan the season.<br /><em>Live the color.</em></h2>
+          <p class="eyebrow">برنامه روزانه — بلوپرینت</p>
+          <h2 class="section-title">امروزت را <em>بلوپرینت</em> بکش</h2>
           <p class="section-lead">
-            Choose a season and preview its months, palette and focus —
-            the exact rhythm Vitto recommends for planning ahead.
+            این همان صفحه طراحی‌شده است، حالا زنده. اولویت‌ها، اهداف، عادت‌ها و
+            درس‌هایت را بنویس — و در پایان روز، دقیقاً بدان کجای راهی.
           </p>
         </header>
 
-        <div class="planner__tabs reveal" role="tablist" aria-label="Choose a season">
-          <button class="planner__tab is-active" data-season="spring" role="tab" aria-selected="true">Spring</button>
-          <button class="planner__tab" data-season="summer" role="tab" aria-selected="false">Summer</button>
-          <button class="planner__tab" data-season="autumn" role="tab" aria-selected="false">Autumn</button>
-          <button class="planner__tab" data-season="winter" role="tab" aria-selected="false">Winter</button>
+        <div class="plan reveal" id="plan">
+          <div class="plan__top">
+            <span class="plan__brand">THE ASCENT BLUEPRINT</span>
+            <span class="plan__mark">000</span>
+          </div>
+          <div class="plan__title">برنامه روزانه</div>
+          <div class="plan__tag">هر روز یک قدم جلوتر</div>
+          <div class="plan__dashes" aria-hidden="true"></div>
+
+          <div class="plan__date">
+            <label for="planDate">تاریخ:</label>
+            <input type="text" id="planDate" value="" readonly />
+          </div>
+
+          <div class="plan__body">
+            <div class="plan__col">
+              <h3 class="plan__head">اولویت کارها</h3>
+              <div class="plan__write" contenteditable="true" data-ph="کارهای مهم امروز را اینجا بنویس…"></div>
+
+              <h3 class="plan__head">اهداف امروز</h3>
+              <div class="plan__write" contenteditable="true" data-ph="امروز می‌خواهی به چه چیزی برسی؟"></div>
+
+              <h3 class="plan__head">اولویت امروز</h3>
+              <div class="plan__checks">
+                <label class="plan__check"><input type="checkbox" /><i></i><span>مطالعه</span></label>
+                <label class="plan__check"><input type="checkbox" /><i></i><span>رشد فردی</span></label>
+                <label class="plan__check"><input type="checkbox" /><i></i><span>تمرین / بدنسازی</span></label>
+              </div>
+            </div>
+
+            <div class="plan__divider" aria-hidden="true"></div>
+
+            <div class="plan__col">
+              <h3 class="plan__head">برنامه امروز</h3>
+              <div class="plan__write plan__write--tall" contenteditable="true" data-ph="ساعت‌به‌ساعت برنامه‌ات را بنویس…"></div>
+
+              <h3 class="plan__head">درس‌هایی که امروز گرفتم</h3>
+              <div class="plan__write plan__write--tall" contenteditable="true" data-ph="امروز چه چیزی یاد گرفتی؟"></div>
+            </div>
+          </div>
+
+          <div class="plan__bar">
+            <span>روز صفر تا قله</span>
+            <b>@ THE ASCENT BLUEPRINT — DAILY</b>
+          </div>
         </div>
 
-        <div class="planner__stage reveal" id="plannerStage">
-          <!-- filled by JS from data -->
+        <div class="planner__actions reveal">
+          <button class="btn btn--solid" id="printPlan">چاپ / ذخیره PDF</button>
+          <button class="btn btn--ghost-dark" id="resetPlan">شروع دوباره</button>
         </div>
-
-        <div class="planner__cta reveal">
-          <a href="#contact" class="btn btn--solid">Get the Printable Vitto Planner</a>
-        </div>
+        <p class="planner__note reveal">متن‌ها به‌صورت خودکار در مرورگر ذخیره می‌شوند. برای شروع روز جدید، «شروع دوباره» را بزن.</p>
       </div>
     </section>
 
-    <!-- ══════════════ LOOKBOOK ══════════════ -->
-    <section class="lookbook" id="lookbook">
+    <!-- ══════════════ FEATURES ══════════════ -->
+    <section class="features" id="features">
       <div class="container">
-        <header class="section-head section-head--center reveal">
-          <p class="eyebrow">03 — Lookbook</p>
-          <h2 class="section-title">Moments from the<br /><em>Vitto year.</em></h2>
+        <header class="section-head reveal">
+          <p class="eyebrow">چرا آسنت؟</p>
+          <h2 class="section-title">ساختار، <em>آرامش</em> می‌آورد</h2>
+          <p class="section-lead">
+            بلوپرینت آسنت یک دفتر برنامه‌ریزی ساده نیست؛ یک سیستم روزانه‌ی مینیمال است
+            برای اینکه هر روز بدانی چه کاری مهم است — و چه کاری می‌تواند صبر کند.
+          </p>
         </header>
-      </div>
 
-      <div class="lookbook__grid container">
-        <figure class="lookbook__item lookbook__item--tall reveal">
-          <img src="assets/img/spring.jpg" alt="Spring still life" loading="lazy" />
-          <figcaption><span>Spring</span>Morning Bloom</figcaption>
-        </figure>
-        <figure class="lookbook__item reveal">
-          <img src="assets/img/summer.jpg" alt="Summer seascape" loading="lazy" />
-          <figcaption><span>Summer</span>Golden Hour</figcaption>
-        </figure>
-        <figure class="lookbook__item reveal">
-          <img src="assets/img/planner.jpg" alt="The Vitto planner on a linen desk" loading="lazy" />
-          <figcaption><span>Studio</span>The Vitto Desk</figcaption>
-        </figure>
-        <figure class="lookbook__item lookbook__item--tall reveal">
-          <img src="assets/img/winter.jpg" alt="Winter cabin" loading="lazy" />
-          <figcaption><span>Winter</span>Quiet Light</figcaption>
-        </figure>
-        <figure class="lookbook__item lookbook__item--wide reveal">
-          <img src="assets/img/hero.jpg" alt="The full year in four seasons" loading="lazy" />
-          <figcaption><span>The Year</span>Four Seasons, One Frame</figcaption>
+        <div class="features__grid">
+          <article class="feature reveal">
+            <span class="feature__icon">🎯</span>
+            <h3>اولویت، نه شلوغی</h3>
+            <p>به‌جای ده‌ها کار بی‌نظم، فقط مهم‌ترین‌ها را مشخص کن و انرژی‌ات را همان‌جا بگذار.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">🌱</span>
+            <h3>عادت‌های کوچک</h3>
+            <p>مطالعه، رشد فردی و تمرین — سه عادت کلیدی که هر روز با یک تیک کوچک، قوی‌تر می‌شوند.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">🧠</span>
+            <h3>یادگیری روزانه</h3>
+            <p>بخش «درس‌هایی که امروز گرفتم» تو را به بازتاب روزانه عادت می‌دهد؛ همان چیزی که رشد واقعی می‌سازد.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">⛰️</span>
+            <h3>از صفر تا قله</h3>
+            <p>هر روز یک قدم. روز صفر مهم نیست، مهم این است که امروز قدم برداشتی و فردا هم برمی‌داری.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ STATS ══════════════ -->
+    <section class="stats" aria-label="اعداد آسنت">
+      <div class="container stats__grid">
+        <div class="stat"><span class="stat__num" data-count="365">0</span><span class="stat__label">روز در سال</span></div>
+        <div class="stat"><span class="stat__num" data-count="3">0</span><span class="stat__label">عادت کلیدی روزانه</span></div>
+        <div class="stat"><span class="stat__num" data-count="5">0</span><span class="stat__label">بخش اصلی برنامه</span></div>
+        <div class="stat"><span class="stat__num" data-count="1">0</span><span class="stat__label">قدم در روز</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ORIGINAL DESIGN ══════════════ -->
+    <section class="design" id="design">
+      <div class="container design__grid">
+        <div class="design__content reveal">
+          <p class="eyebrow">طراحی اصلی</p>
+          <h2 class="section-title">همین صفحه‌ای که <em>می‌بینی</em>،<br />حالا زنده شده است</h2>
+          <p class="section-lead">
+            این بلوپرینت همان طراحی‌ای است که این سایت از روی آن ساخته شده —
+            گرادیان بنفش شب، متن روشن اسطوخودوسی، چک‌باکس‌ها و خط‌چین‌ها.
+          </p>
+          <ul class="design__list">
+            <li>گرادیان بنفش-سرمه‌ای با درخشش ملایم</li>
+            <li>چک‌باکس‌ها و خطوط نقطه‌چین برای نوشتن</li>
+            <li>نوار پایین «روز صفر تا قله»</li>
+            <li>چیدمان دو ستونه: کارها و برنامه روز</li>
+          </ul>
+          <div class="design__actions">
+            <a href="assets/img/planner-original.png" download class="btn btn--solid">دانلود طرح اصلی</a>
+          </div>
+        </div>
+        <figure class="design__visual reveal">
+          <img src="assets/img/planner-original.png" alt="طراحی اصلی برنامه روزانه THE ASCENT BLUEPRINT" loading="lazy" />
+          <figcaption>بلوپرینت اصلی — برنامه روزانه</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- ══════════════ CONTACT / NEWSLETTER ══════════════ -->
+    <!-- ══════════════ CONTACT ══════════════ -->
     <section class="contact" id="contact">
       <div class="container contact__grid">
         <div class="contact__info reveal">
-          <p class="eyebrow">04 — Stay in Season</p>
-          <h2 class="section-title">Join the<br /><em>Vitto List.</em></h2>
+          <p class="eyebrow">خبرنامه</p>
+          <h2 class="section-title">هر روز، یک قدم <em>جلوتر</em></h2>
           <p class="contact__text">
-            Seasonal inspiration, planning prompts and early access —
-            delivered four times a year, exactly when you need them. No noise, ever.
+            قالب‌های رایگان برنامه روزانه، ایده‌های رشد فردی و نکته‌های کوچک —
+            هر هفته در ایمیل تو. بدون اسپم، فقط قدم‌های جلو.
           </p>
         </div>
         <form class="contact__form reveal" id="newsletterForm" novalidate>
-          <label class="sr-only" for="email">Email address</label>
+          <label class="sr-only" for="email">ایمیل</label>
           <div class="contact__field">
-            <input type="email" id="email" name="email" placeholder="you@example.com" required />
-            <button type="submit" class="btn btn--solid">Subscribe</button>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required dir="ltr" />
+            <button type="submit" class="btn btn--solid">عضویت</button>
           </div>
           <p class="contact__note" id="formNote" role="status" aria-live="polite"></p>
         </form>
@@ -320,28 +266,28 @@
   <footer class="footer">
     <div class="container footer__grid">
       <div class="footer__brand">
-        <p class="footer__logo">VITTO<sup>®</sup></p>
-        <p class="footer__tag">Season Planner — crafted for a year in living color.</p>
+        <p class="footer__logo">THE ASCENT <em>BLUEPRINT</em></p>
+        <p class="footer__tag">برنامه روزانه — هر روز یک قدم جلوتر. از روز صفر تا قله.</p>
       </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <a href="#seasons">Seasons</a>
-        <a href="#planner">Planner</a>
-        <a href="#lookbook">Lookbook</a>
-        <a href="#contact">Contact</a>
+      <nav class="footer__nav" aria-label="دسترسی سریع">
+        <a href="#planner">برنامه روزانه</a>
+        <a href="#features">چرا آسنت؟</a>
+        <a href="#design">طراحی</a>
+        <a href="#contact">تماس</a>
       </nav>
       <div class="footer__social">
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="Pinterest">Pinterest</a>
-        <a href="#" aria-label="YouTube">YouTube</a>
+        <a href="#" aria-label="اینستاگرام">اینستاگرام</a>
+        <a href="#" aria-label="تلگرام">تلگرام</a>
+        <a href="#" aria-label="توییتر">توییتر</a>
       </div>
     </div>
     <div class="container footer__bottom">
-      <p>© <span id="year">2026</span> Vitto Season Planner. All rights reserved.</p>
-      <p>Made with <span class="footer__heart">♥</span> for four seasons.</p>
+      <p>© <span id="year">2026</span> THE ASCENT BLUEPRINT. تمامی حقوق محفوظ است.</p>
+      <p>ساخته‌شده با <span class="footer__heart">♥</span> برای قدم‌های کوچک</p>
     </div>
   </footer>
 
-  <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+  <button class="to-top" id="toTop" aria-label="بازگشت به بالا">↑</button>
 
   <script src="assets/js/main.js"></script>
 </body>
