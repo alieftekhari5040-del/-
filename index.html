@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE ASCENT BLUEPRINT | برنامه روزانه — هر روز یک قدم جلوتر</title>
+  <meta name="description" content="برنامه روزانه آسنت — بلوپرینت روزانه‌ای برای اولویت‌بندی کارها، رشد فردی و حرکت از روز صفر تا قله. هر روز یک قدم جلوتر." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>" />
+</head>
+<body>
+
+  <!-- ══════════════ NAVIGATION ══════════════ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="#home" class="nav__brand">
+        <span class="nav__brand-mark">000</span>
+        <span class="nav__brand-text">
+          <b>THE ASCENT <i>BLUEPRINT</i></b>
+          <small>برنامه روزانه</small>
+        </span>
+      </a>
+
+      <nav class="nav__menu" id="navMenu" aria-label="منوی اصلی">
+        <a href="#planner" class="nav__link">برنامه روزانه</a>
+        <a href="#features" class="nav__link">چرا آسنت؟</a>
+        <a href="#design" class="nav__link">طراحی</a>
+        <a href="#contact" class="nav__link">تماس</a>
+        <a href="#planner" class="nav__cta">شروع برنامه‌ریزی</a>
+      </nav>
+
+      <button class="nav__toggle" id="navToggle" aria-label="باز و بسته کردن منو" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ══════════════ HERO ══════════════ -->
+    <section class="hero" id="home">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__grid container">
+        <div class="hero__content">
+          <p class="eyebrow reveal">THE ASCENT BLUEPRINT</p>
+          <h1 class="hero__title reveal">برنامه <em>روزانه</em><br />هر روز یک قدم جلوتر</h1>
+          <p class="hero__sub reveal">
+            یک صفحه، یک روز، یک قدم. اولویت‌هایت را مشخص کن، کارهایت را بنویس،
+            عادت‌های کوچک را بساز — و از «روز صفر» تا «قله» قدم‌به‌قدم پیش برو.
+          </p>
+          <div class="hero__date reveal" id="heroDate"></div>
+          <div class="hero__actions reveal">
+            <a href="#planner" class="btn btn--solid">شروع برنامه‌ریزی امروز</a>
+            <a href="#design" class="btn btn--ghost">مشاهده طراحی اصلی</a>
+          </div>
+        </div>
+
+        <div class="hero__visual reveal" aria-hidden="true">
+          <div class="hero__mock">
+            <div class="mock__top">
+              <span class="mock__brand">THE ASCENT BLUEPRINT</span>
+              <span class="mock__mark">000</span>
+            </div>
+            <div class="mock__title">برنامه روزانه</div>
+            <div class="mock__tag">هر روز یک قدم جلوتر</div>
+            <div class="mock__dashes"></div>
+            <div class="mock__cols">
+              <div class="mock__col">
+                <div class="mock__head">اولویت کارها</div>
+                <div class="mock__head">اهداف امروز</div>
+                <div class="mock__head">اولویت امروز</div>
+                <div class="mock__check"><i></i> مطالعه</div>
+                <div class="mock__check"><i></i> رشد فردی</div>
+                <div class="mock__check"><i></i> تمرین / بدنسازی</div>
+              </div>
+              <div class="mock__col">
+                <div class="mock__head">برنامه امروز</div>
+                <div class="mock__head">درس‌هایی که امروز گرفتم</div>
+              </div>
+            </div>
+            <div class="mock__bar">
+              <span>روز صفر تا قله</span>
+              <b>@ THE ASCENT BLUEPRINT — DAILY</b>
+            </div>
+          </div>
+          <div class="hero__glow-ring" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <a href="#planner" class="hero__scroll" aria-label="اسکرول به پایین">
+        <span>ببین چطور کار می‌کند</span>
+        <i></i>
+      </a>
+    </section>
+
+    <!-- ══════════════ INTERACTIVE PLANNER ══════════════ -->
+    <section class="planner" id="planner">
+      <div class="container">
+        <header class="section-head section-head--center reveal">
+          <p class="eyebrow">برنامه روزانه — بلوپرینت</p>
+          <h2 class="section-title">امروزت را <em>بلوپرینت</em> بکش</h2>
+          <p class="section-lead">
+            این همان صفحه طراحی‌شده است، حالا زنده. اولویت‌ها، اهداف، عادت‌ها و
+            درس‌هایت را بنویس — و در پایان روز، دقیقاً بدان کجای راهی.
+          </p>
+        </header>
+
+        <div class="plan reveal" id="plan">
+          <div class="plan__top">
+            <span class="plan__brand">THE ASCENT BLUEPRINT</span>
+            <span class="plan__mark">000</span>
+          </div>
+          <div class="plan__title">برنامه روزانه</div>
+          <div class="plan__tag">هر روز یک قدم جلوتر</div>
+          <div class="plan__dashes" aria-hidden="true"></div>
+
+          <div class="plan__date">
+            <label for="planDate">تاریخ:</label>
+            <input type="text" id="planDate" value="" readonly />
+          </div>
+
+          <div class="plan__body">
+            <div class="plan__col">
+              <h3 class="plan__head">اولویت کارها</h3>
+              <div class="plan__write" contenteditable="true" data-ph="کارهای مهم امروز را اینجا بنویس…"></div>
+
+              <h3 class="plan__head">اهداف امروز</h3>
+              <div class="plan__write" contenteditable="true" data-ph="امروز می‌خواهی به چه چیزی برسی؟"></div>
+
+              <h3 class="plan__head">اولویت امروز</h3>
+              <div class="plan__checks">
+                <label class="plan__check"><input type="checkbox" /><i></i><span>مطالعه</span></label>
+                <label class="plan__check"><input type="checkbox" /><i></i><span>رشد فردی</span></label>
+                <label class="plan__check"><input type="checkbox" /><i></i><span>تمرین / بدنسازی</span></label>
+              </div>
+            </div>
+
+            <div class="plan__divider" aria-hidden="true"></div>
+
+            <div class="plan__col">
+              <h3 class="plan__head">برنامه امروز</h3>
+              <div class="plan__write plan__write--tall" contenteditable="true" data-ph="ساعت‌به‌ساعت برنامه‌ات را بنویس…"></div>
+
+              <h3 class="plan__head">درس‌هایی که امروز گرفتم</h3>
+              <div class="plan__write plan__write--tall" contenteditable="true" data-ph="امروز چه چیزی یاد گرفتی؟"></div>
+            </div>
+          </div>
+
+          <div class="plan__bar">
+            <span>روز صفر تا قله</span>
+            <b>@ THE ASCENT BLUEPRINT — DAILY</b>
+          </div>
+        </div>
+
+        <div class="planner__actions reveal">
+          <button class="btn btn--solid" id="printPlan">چاپ / ذخیره PDF</button>
+          <button class="btn btn--ghost-dark" id="resetPlan">شروع دوباره</button>
+        </div>
+        <p class="planner__note reveal">متن‌ها به‌صورت خودکار در مرورگر ذخیره می‌شوند. برای شروع روز جدید، «شروع دوباره» را بزن.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════ FEATURES ══════════════ -->
+    <section class="features" id="features">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">چرا آسنت؟</p>
+          <h2 class="section-title">ساختار، <em>آرامش</em> می‌آورد</h2>
+          <p class="section-lead">
+            بلوپرینت آسنت یک دفتر برنامه‌ریزی ساده نیست؛ یک سیستم روزانه‌ی مینیمال است
+            برای اینکه هر روز بدانی چه کاری مهم است — و چه کاری می‌تواند صبر کند.
+          </p>
+        </header>
+
+        <div class="features__grid">
+          <article class="feature reveal">
+            <span class="feature__icon">🎯</span>
+            <h3>اولویت، نه شلوغی</h3>
+            <p>به‌جای ده‌ها کار بی‌نظم، فقط مهم‌ترین‌ها را مشخص کن و انرژی‌ات را همان‌جا بگذار.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">🌱</span>
+            <h3>عادت‌های کوچک</h3>
+            <p>مطالعه، رشد فردی و تمرین — سه عادت کلیدی که هر روز با یک تیک کوچک، قوی‌تر می‌شوند.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">🧠</span>
+            <h3>یادگیری روزانه</h3>
+            <p>بخش «درس‌هایی که امروز گرفتم» تو را به بازتاب روزانه عادت می‌دهد؛ همان چیزی که رشد واقعی می‌سازد.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon">⛰️</span>
+            <h3>از صفر تا قله</h3>
+            <p>هر روز یک قدم. روز صفر مهم نیست، مهم این است که امروز قدم برداشتی و فردا هم برمی‌داری.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ STATS ══════════════ -->
+    <section class="stats" aria-label="اعداد آسنت">
+      <div class="container stats__grid">
+        <div class="stat"><span class="stat__num" data-count="365">0</span><span class="stat__label">روز در سال</span></div>
+        <div class="stat"><span class="stat__num" data-count="3">0</span><span class="stat__label">عادت کلیدی روزانه</span></div>
+        <div class="stat"><span class="stat__num" data-count="5">0</span><span class="stat__label">بخش اصلی برنامه</span></div>
+        <div class="stat"><span class="stat__num" data-count="1">0</span><span class="stat__label">قدم در روز</span></div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ORIGINAL DESIGN ══════════════ -->
+    <section class="design" id="design">
+      <div class="container design__grid">
+        <div class="design__content reveal">
+          <p class="eyebrow">طراحی اصلی</p>
+          <h2 class="section-title">همین صفحه‌ای که <em>می‌بینی</em>،<br />حالا زنده شده است</h2>
+          <p class="section-lead">
+            این بلوپرینت همان طراحی‌ای است که این سایت از روی آن ساخته شده —
+            گرادیان بنفش شب، متن روشن اسطوخودوسی، چک‌باکس‌ها و خط‌چین‌ها.
+          </p>
+          <ul class="design__list">
+            <li>گرادیان بنفش-سرمه‌ای با درخشش ملایم</li>
+            <li>چک‌باکس‌ها و خطوط نقطه‌چین برای نوشتن</li>
+            <li>نوار پایین «روز صفر تا قله»</li>
+            <li>چیدمان دو ستونه: کارها و برنامه روز</li>
+          </ul>
+          <div class="design__actions">
+            <a href="assets/img/planner-original.png" download class="btn btn--solid">دانلود طرح اصلی</a>
+          </div>
+        </div>
+        <figure class="design__visual reveal">
+          <img src="assets/img/planner-original.png" alt="طراحی اصلی برنامه روزانه THE ASCENT BLUEPRINT" loading="lazy" />
+          <figcaption>بلوپرینت اصلی — برنامه روزانه</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ══════════════ CONTACT ══════════════ -->
+    <section class="contact" id="contact">
+      <div class="container contact__grid">
+        <div class="contact__info reveal">
+          <p class="eyebrow">خبرنامه</p>
+          <h2 class="section-title">هر روز، یک قدم <em>جلوتر</em></h2>
+          <p class="contact__text">
+            قالب‌های رایگان برنامه روزانه، ایده‌های رشد فردی و نکته‌های کوچک —
+            هر هفته در ایمیل تو. بدون اسپم، فقط قدم‌های جلو.
+          </p>
+        </div>
+        <form class="contact__form reveal" id="newsletterForm" novalidate>
+          <label class="sr-only" for="email">ایمیل</label>
+          <div class="contact__field">
+            <input type="email" id="email" name="email" placeholder="you@example.com" required dir="ltr" />
+            <button type="submit" class="btn btn--solid">عضویت</button>
+          </div>
+          <p class="contact__note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <p class="footer__logo">THE ASCENT <em>BLUEPRINT</em></p>
+        <p class="footer__tag">برنامه روزانه — هر روز یک قدم جلوتر. از روز صفر تا قله.</p>
+      </div>
+      <nav class="footer__nav" aria-label="دسترسی سریع">
+        <a href="#planner">برنامه روزانه</a>
+        <a href="#features">چرا آسنت؟</a>
+        <a href="#design">طراحی</a>
+        <a href="#contact">تماس</a>
+      </nav>
+      <div class="footer__social">
+        <a href="#" aria-label="اینستاگرام">اینستاگرام</a>
+        <a href="#" aria-label="تلگرام">تلگرام</a>
+        <a href="#" aria-label="توییتر">توییتر</a>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p>© <span id="year">2026</span> THE ASCENT BLUEPRINT. تمامی حقوق محفوظ است.</p>
+      <p>ساخته‌شده با <span class="footer__heart">♥</span> برای قدم‌های کوچک</p>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" aria-label="بازگشت به بالا">↑</button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
