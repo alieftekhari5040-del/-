@@ -218,13 +218,10 @@
 
   /* ---------- Layout ---------- */
   .layout{
-    display:block;
+    display:grid;grid-template-columns:330px 1fr;gap:22px;align-items:start;
   }
   .main-area{display:flex;flex-direction:column;gap:22px;min-width:0}
-
-  .bottom-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:22px;
-  }
+  .side-area{position:sticky;top:20px;display:flex;flex-direction:column;gap:22px}
 
   /* ---------- Todos ---------- */
   .list-body{padding:4px 16px 18px}
@@ -430,7 +427,9 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:880px){
-    .bottom-grid{grid-template-columns:1fr}
+    .layout{grid-template-columns:1fr}
+    .side-area{position:static;order:1}
+    .main-area{order:2}
     .date-row{justify-content:space-between}
   }
   @media(max-width:560px){
@@ -499,9 +498,40 @@
   <!-- Main layout -->
   <div class="layout">
 
-    <!-- Main: برنامه امروز -->
+    <!-- Left column: اولویت کارها + اهداف امروز -->
+    <aside class="side-area">
+      <section class="panel fade-in" style="animation-delay:.1s">
+        <div class="panel-head">
+          <span class="accent"></span>
+          <h2 class="panel-title">اولویت کارها</h2>
+          <span class="count-badge" id="prioCount">۰</span>
+          <div class="head-spacer"></div>
+          <button class="add-btn" onclick="addItem('priorities')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            افزودن
+          </button>
+        </div>
+        <div class="list-body" id="prioList"></div>
+      </section>
+
+      <section class="panel fade-in" style="animation-delay:.16s">
+        <div class="panel-head">
+          <span class="accent"></span>
+          <h2 class="panel-title">اهداف امروز</h2>
+          <span class="count-badge" id="goalCount">۰</span>
+          <div class="head-spacer"></div>
+          <button class="add-btn" onclick="addItem('goals')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            افزودن
+          </button>
+        </div>
+        <div class="list-body" id="goalList"></div>
+      </section>
+    </aside>
+
+    <!-- Right column: برنامه امروز -->
     <section class="main-area">
-      <div class="panel fade-in" style="animation-delay:.12s">
+      <div class="panel fade-in" style="animation-delay:.2s">
         <div class="panel-head">
           <span class="accent"></span>
           <h2 class="panel-title">برنامه امروز</h2>
@@ -513,38 +543,6 @@
           </button>
         </div>
         <div class="list-body planner" id="programList"></div>
-      </div>
-
-      <div class="bottom-grid">
-        <!-- اولویت کارها -->
-        <section class="panel fade-in" style="animation-delay:.16s">
-          <div class="panel-head">
-            <span class="accent"></span>
-            <h2 class="panel-title">اولویت کارها</h2>
-            <span class="count-badge" id="prioCount">۰</span>
-            <div class="head-spacer"></div>
-            <button class="add-btn" onclick="addItem('priorities')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              افزودن
-            </button>
-          </div>
-          <div class="list-body" id="prioList"></div>
-        </section>
-
-        <!-- اهداف امروز -->
-        <section class="panel fade-in" style="animation-delay:.2s">
-          <div class="panel-head">
-            <span class="accent"></span>
-            <h2 class="panel-title">اهداف امروز</h2>
-            <span class="count-badge" id="goalCount">۰</span>
-            <div class="head-spacer"></div>
-            <button class="add-btn" onclick="addItem('goals')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              افزودن
-            </button>
-          </div>
-          <div class="list-body" id="goalList"></div>
-        </section>
       </div>
     </section>
   </div>
