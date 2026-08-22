@@ -218,11 +218,6 @@
   .planner{padding:6px 20px 20px;position:relative}
   .planner-row{display:flex;align-items:stretch;direction:rtl;border-bottom:1px solid rgba(148,120,255,.16);min-height:84px;padding:0;animation:rowIn .28s ease}
   .planner-row:last-child{border-bottom:none}
-  .planner-num{
-    order:2;width:48px;flex:0 0 48px;display:flex;align-items:center;justify-content:center;
-    border-left:1px solid rgba(148,120,255,.30);background:linear-gradient(270deg,rgba(139,92,246,.07),transparent);
-    color:#c9b4ff;font-size:17px;font-weight:800;
-  }
   .planner-body{flex:1;min-width:0;direction:rtl;display:flex;align-items:center;gap:16px;padding:14px 22px}
   .planner-body > .check{flex-shrink:0}
   .planner-body > .row-body{flex:1;min-width:0}
@@ -527,7 +522,6 @@
 
       if (opts.planner) {
         row.innerHTML = `
-          <div class="planner-num">${faNumber(idx + 1)}</div>
           <div class="planner-body">${check}${input}${actions}</div>`;
       } else {
         row.innerHTML = `${check}${input}${actions}${opts.numbered ? `<span class="row-num">${faNumber(idx + 1)}</span>` : ''}`;
@@ -598,7 +592,7 @@
     renderCalendar();
     renderTodos('program', 'programList', { planner: true, empty: 'برنامه‌ی امروز خالی است.' });
     renderTodos('priorities', 'prioList', { numbered: true, empty: 'اولویت کاری ثبت نشده.' });
-    renderTodos('goals', 'goalList', { numbered: true, empty: 'هنوز هدفی برای امروز ثبت نشده.' });
+    renderTodos('goals', 'goalList', { empty: 'هنوز هدفی برای امروز ثبت نشده.' });
     renderLessons();
     renderProgress();
   };
