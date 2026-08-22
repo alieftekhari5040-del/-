@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>برنامه روزانه | The Ascent Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070512;
+    --bg2:#0b0a22;
+    --panel:rgba(27,22,66,.62);
+    --panel-solid:#17123a;
+    --border:rgba(148,120,255,.28);
+    --border-soft:rgba(148,120,255,.16);
+    --text:#f2eeff;
+    --muted:#a79ed3;
+    --dim:#746aa8;
+    --violet:#8b5cf6;
+    --violet-2:#a855f7;
+    --red:#ff4d6d;
+    --green:#39d98a;
+    --teal:#2dd4bf;
+    --radius:22px;
+    --shadow:0 20px 60px rgba(0,0,0,.45);
+    --glow:0 0 30px rgba(139,92,246,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Vazirmatn',system-ui,sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(124,58,237,.22), transparent 60%),
+      radial-gradient(900px 600px at -10% 40%, rgba(236,72,153,.12), transparent 55%),
+      radial-gradient(1000px 700px at 60% 110%, rgba(79,70,229,.18), transparent 55%),
+      linear-gradient(160deg,var(--bg2),var(--bg) 55%);
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(139,92,246,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(139,92,246,.045) 1px,transparent 1px);
+    background-size:46px 46px;
+    pointer-events:none;
+    z-index:0;
+    -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 78%);
+    mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 78%);
+  }
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(139,92,246,.4);border-radius:20px}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.65)}
+
+  .shell{
+    position:relative;z-index:1;
+    max-width:1240px;margin:0 auto;
+    padding:26px 22px 30px;
+  }
+
+  /* ---------- Header ---------- */
+  .topbar{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:20px;padding:6px 8px 20px;
+  }
+  .title-block h1{
+    font-size:clamp(30px,4.2vw,52px);
+    font-weight:900;line-height:1.1;
+    background:linear-gradient(180deg,#fff,#c9b6ff);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 4px 22px rgba(139,92,246,.35));
+  }
+  .title-block p{
+    margin-top:8px;color:var(--muted);font-size:14px;font-weight:500;
+    letter-spacing:.4px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:14px;
+    padding:10px 0 4px;flex-shrink:0;
+  }
+  .brand-text{
+    text-align:left;line-height:1.2;
+    font-family:'Orbitron',sans-serif;font-weight:700;
+    font-size:13px;letter-spacing:3px;color:#cbbaff;
+    text-transform:uppercase;
+  }
+  .brand-text span:last-child{color:#8a76c9;letter-spacing:5px}
+  .brand-logo{
+    display:flex;gap:6px;
+  }
+  .brand-logo i{
+    width:13px;height:34px;border-radius:8px;
+    background:linear-gradient(180deg,#c9a5ff,#7c3aed 60%,#4c1d95);
+    box-shadow:0 0 14px rgba(168,85,247,.8);
+  }
+  .brand-logo i:nth-child(2){height:26px;align-self:center}
+  .brand-logo i:nth-child(3){width:8px;height:30px;background:linear-gradient(180deg,#e3d1ff,#a855f7)}
+
+  /* ---------- Cards ---------- */
+  .panel,.date-card{
+    position:relative;
+    background:linear-gradient(180deg,rgba(35,29,80,.72),rgba(18,14,46,.68));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05);
+    backdrop-filter:blur(14px);
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:radial-gradient(600px 120px at 50% -20%,rgba(139,92,246,.16),transparent 70%);
+  }
+
+  .panel-head{
+    display:flex;align-items:center;gap:10px;
+    padding:18px 20px 14px;
+  }
+  .panel-title{
+    font-size:17px;font-weight:800;color:var(--text);
+    text-shadow:0 0 18px rgba(168,85,247,.35);
+  }
+  .accent{
+    width:7px;height:24px;border-radius:6px;flex-shrink:0;
+    background:linear-gradient(180deg,#ff6b88,#e11d48);
+    box-shadow:0 0 14px rgba(244,63,94,.7);
+  }
+  .head-spacer{flex:1}
+  .count-badge{
+    font-size:12px;font-weight:700;color:#d8cfff;
+    background:rgba(139,92,246,.16);border:1px solid rgba(148,120,255,.3);
+    padding:4px 10px;border-radius:30px;white-space:nowrap;
+  }
+  .add-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:inherit;font-size:12.5px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,#a855f7,#7c3aed);
+    border:none;border-radius:12px;padding:8px 13px;cursor:pointer;
+    box-shadow:0 8px 20px rgba(124,58,237,.35);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .add-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(124,58,237,.5)}
+  .add-btn:active{transform:translateY(0)}
+  .add-btn svg{width:15px;height:15px}
+
+  /* ---------- Date card + calendar ---------- */
+  .date-card{
+    display:flex;flex-direction:column;gap:16px;
+    margin-bottom:22px;padding:20px 22px 18px;
+  }
+  .date-row{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .date-label{
+    font-size:18px;font-weight:800;color:var(--violet-2);
+    text-shadow:0 0 16px rgba(168,85,247,.5);
+  }
+  .date-value{
+    font-size:clamp(17px,2.2vw,22px);font-weight:700;color:#fff;
+    cursor:pointer;border-bottom:1px dashed rgba(148,120,255,.5);
+    padding-bottom:2px;transition:color .2s;
+  }
+  .date-value:hover{color:#d9c8ff}
+  .today-btn{
+    font-family:inherit;font-size:12px;font-weight:700;color:#e9ddff;
+    background:rgba(139,92,246,.16);border:1px solid rgba(148,120,255,.32);
+    padding:6px 13px;border-radius:30px;cursor:pointer;transition:.2s;
+  }
+  .today-btn:hover{background:rgba(139,92,246,.34)}
+
+  .day-strip{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:10px;
+    direction:ltr;
+  }
+  .day-pill{
+    font-family:inherit;cursor:pointer;
+    background:rgba(255,255,255,.04);border:1px solid var(--border-soft);
+    color:var(--muted);border-radius:14px;
+    padding:9px 6px;text-align:center;transition:.2s;
+  }
+  .day-pill small{display:block;font-size:11px;opacity:.75;margin-top:2px;font-weight:500}
+  .day-pill b{font-size:14px;font-weight:800;display:block}
+  .day-pill:hover{border-color:var(--violet-2);color:#fff;transform:translateY(-2px)}
+  .day-pill.active{
+    background:linear-gradient(135deg,rgba(168,85,247,.9),rgba(109,40,217,.9));
+    border-color:#c4a6ff;color:#fff;
+    box-shadow:0 8px 24px rgba(124,58,237,.5);
+  }
+  .day-pill.is-today{outline:1px solid rgba(57,217,138,.55);outline-offset:2px}
+
+  .date-foot{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .progress-wrap{flex:1;min-width:220px}
+  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:600}
+  .progress-bar{height:9px;border-radius:30px;background:rgba(255,255,255,.06);overflow:hidden}
+  .progress-fill{
+    height:100%;width:0;border-radius:30px;
+    background:linear-gradient(90deg,#39d98a,#7c3aed,#a855f7);
+    box-shadow:0 0 14px rgba(57,217,138,.6);
+    transition:width .5s ease;
+  }
+  .progress-ring{
+    --p:0;
+    position:relative;
+    width:46px;height:46px;border-radius:50%;
+    background:conic-gradient(#a855f7 calc(var(--p)*1%),rgba(255,255,255,.08) 0);
+    display:grid;place-items:center;flex-shrink:0;
+    box-shadow:0 0 18px rgba(168,85,247,.4);
+  }
+  .progress-ring::before{content:"";position:absolute;width:38px;height:38px;border-radius:50%;background:#100d2c}
+  .progress-ring span{position:relative;font-size:11px;font-weight:800;color:#fff;z-index:1}
+
+  /* ---------- Layout ---------- */
+  .layout{
+    display:grid;grid-template-columns:330px 1fr;gap:22px;align-items:start;
+  }
+  .main-area{display:flex;flex-direction:column;gap:22px;min-width:0}
+  .side-area{position:sticky;top:20px;display:flex;flex-direction:column;gap:22px}
+
+  .bottom-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:22px;
+  }
+
+  /* ---------- Todos ---------- */
+  .list-body{padding:4px 16px 18px}
+  .empty{
+    text-align:center;color:var(--dim);font-size:13px;padding:26px 10px;
+    border:1px dashed rgba(148,120,255,.28);border-radius:16px;margin:4px;
+  }
+  .empty button{font-family:inherit;color:#cbbaff;background:none;border:none;cursor:pointer;font-weight:700;margin-top:8px;font-size:13px}
+  .empty button:hover{text-decoration:underline}
+
+  .todo-row{
+    display:flex;align-items:center;gap:10px;
+    padding:11px 8px;
+    border-bottom:1px solid rgba(148,120,255,.12);
+    animation:rowIn .28s ease;
+    position:relative;
+  }
+  .todo-row:last-child{border-bottom:none}
+  @keyframes rowIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+  .check{
+    width:24px;height:24px;border-radius:8px;flex-shrink:0;cursor:pointer;
+    border:2px solid rgba(224,107,255,.75);
+    background:linear-gradient(180deg,rgba(40,28,80,.6),rgba(22,16,52,.6));
+    box-shadow:inset 0 0 10px rgba(0,0,0,.35),0 0 10px rgba(168,85,247,.2);
+    display:grid;place-items:center;
+    transition:.18s;
+  }
+  .check svg{width:14px;height:14px;opacity:0;transform:scale(.4);transition:.18s;color:#0a0716}
+  .todo-row.done .check{
+    background:linear-gradient(135deg,#39d98a,#22c55e);
+    border-color:#7ce7b1;
+    box-shadow:0 0 14px rgba(57,217,138,.55);
+  }
+  .todo-row.done .check svg{opacity:1;transform:scale(1)}
+
+  .row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .todo-input{
+    font-family:inherit;font-size:14.5px;font-weight:600;color:#eee9ff;
+    background:transparent;border:none;outline:none;
+    padding:3px 0;width:100%;
+  }
+  .todo-input::placeholder{color:var(--dim);font-weight:500}
+  .todo-row.done .todo-input{color:#8f86ba;text-decoration:line-through}
+  .time-chip{
+    font-family:inherit;font-size:11px;font-weight:700;color:#cfc4ff;
+    align-self:flex-start;
+    background:rgba(139,92,246,.14);border:1px solid rgba(148,120,255,.28);
+    border-radius:8px;padding:3px 7px;
+  }
+  .time-chip input{
+    font-family:inherit;font-size:11px;font-weight:700;color:#cfc4ff;
+    background:transparent;border:none;outline:none;width:52px;direction:ltr;
+  }
+  input[type="time"]::-webkit-calendar-picker-indicator{filter:invert(.8);cursor:pointer}
+
+  .row-actions{display:flex;gap:4px;opacity:0;transform:translateX(6px);transition:.18s}
+  .todo-row:hover .row-actions{opacity:1;transform:none}
+  .icon-btn{
+    width:28px;height:28px;border-radius:8px;cursor:pointer;
+    border:1px solid transparent;background:rgba(255,255,255,.04);
+    color:var(--muted);display:grid;place-items:center;transition:.18s;
+  }
+  .icon-btn svg{width:14px;height:14px}
+  .icon-btn:hover{color:#fff;background:rgba(139,92,246,.22);border-color:var(--border)}
+  .icon-btn.del:hover{color:#ffb3c0;background:rgba(244,63,94,.22);border-color:rgba(244,63,94,.4)}
+
+  /* ---------- Focus list (اولویت امروز) ---------- */
+  .focus-row{
+    display:flex;align-items:center;gap:12px;padding:13px 6px;
+    border-bottom:1px solid rgba(148,120,255,.14);
+    animation:rowIn .28s ease;
+  }
+  .focus-row:last-child{border-bottom:none}
+  .focus-cat{
+    display:flex;align-items:center;gap:8px;min-width:120px;
+  }
+  .focus-cat input{
+    font-family:inherit;font-size:12.5px;font-weight:700;color:#ff7a97;
+    background:transparent;border:none;outline:none;width:100%;
+  }
+  .focus-cat svg{width:17px;height:17px;color:#b18aff;flex-shrink:0}
+  .dots-line{
+    flex:1;min-width:0;
+    background-image:radial-gradient(circle, rgba(190,160,255,.55) 1.4px, transparent 1.6px);
+    background-size:9px 9px;background-repeat:repeat-x;background-position:0 53%;
+    height:20px;display:flex;align-items:center;
+  }
+  .dots-line input{
+    background:transparent;border:none;outline:none;width:100%;
+    font-family:inherit;font-size:13px;font-weight:600;color:#e9e2ff;padding:0 4px;
+  }
+  .focus-row.done .focus-cat input{text-decoration:line-through;color:#8f86ba}
+  .focus-row.done .dots-line input{text-decoration:line-through;color:#8f86ba}
+
+  /* ---------- Lessons (lined paper) ---------- */
+  .lessons-panel{margin-top:22px}
+  .paper-outer{padding:6px 22px 20px}
+  .paper{
+    position:relative;
+    background:linear-gradient(180deg,rgba(24,19,58,.55),rgba(15,12,40,.55));
+    border:1px solid rgba(148,120,255,.25);
+    border-radius:16px;
+    padding:18px 18px 6px;
+    min-height:260px;
+    max-height:520px;
+    overflow:auto;
+  }
+  .paper::before{
+    content:"";position:absolute;inset:14px 10px 14px 10px;pointer-events:none;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 43px,
+      rgba(190,160,255,.28) 43px,
+      rgba(190,160,255,.28) 44px
+    );
+    border-radius:8px;
+  }
+  .paper .ruler{
+    position:absolute;inset:14px 10px 14px 10px;pointer-events:none;
+    border-right:2px solid rgba(255,77,109,.5);
+    border-radius:2px 0 0 2px;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,77,109,0) 0,
+      rgba(255,77,109,0) 43px,
+      rgba(255,77,109,0) 44px
+    );
+  }
+  .paper-content{
+    position:relative;outline:none;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:16.5px;font-weight:600;color:#efe9ff;
+    line-height:44px;
+    min-height:210px;
+    white-space:pre-wrap;word-break:break-word;
+  }
+  .paper-content:empty::before{
+    content:"درس‌های امروز را اینجا بنویس...";
+    color:var(--dim);font-weight:500;
+  }
+  .paper-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 4px 2px;color:var(--dim);font-size:11.5px;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:26px;padding:4px 6px;color:#5f5789;font-size:12px;
+    border-top:1px solid rgba(148,120,255,.12);padding-top:16px;
+  }
+  .footer b{color:#cbbaff;letter-spacing:1px}
+
+  /* ---------- Calendar modal ---------- */
+  .modal-veil{
+    position:fixed;inset:0;z-index:50;display:none;
+    background:rgba(4,3,16,.6);backdrop-filter:blur(6px);
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-veil.open{display:flex;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{
+    width:min(380px,100%);
+    background:linear-gradient(180deg,#1b1544,#110d30);
+    border:1px solid var(--border);
+    border-radius:22px;padding:20px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 40px rgba(124,58,237,.25);
+    animation:pop .25s ease;
+  }
+  @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .cal-title{font-size:16px;font-weight:800;color:#fff}
+  .cal-nav{display:flex;gap:6px}
+  .icon-btn.round{border-radius:10px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;direction:rtl}
+  .cal-dow{font-size:11px;color:var(--muted);text-align:center;font-weight:700;padding:4px 0}
+  .cal-day{
+    font-family:inherit;font-size:13px;font-weight:700;color:#d9d0ff;
+    background:rgba(255,255,255,.04);border:1px solid transparent;
+    border-radius:10px;height:38px;cursor:pointer;transition:.15s;
+  }
+  .cal-day:hover{background:rgba(139,92,246,.25);border-color:var(--border)}
+  .cal-day.dim{opacity:.32;color:var(--muted)}
+  .cal-day.today{border:1px solid rgba(57,217,138,.55);color:#7ce7b1}
+  .cal-day.selected{
+    background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;
+    box-shadow:0 6px 16px rgba(124,58,237,.5);
+  }
+  .cal-foot{display:flex;justify-content:center;margin-top:16px}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:#201743;border:1px solid var(--border);color:#eee9ff;
+    padding:10px 18px;border-radius:14px;font-size:13px;font-weight:600;
+    box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;
+    transition:.25s;z-index:80;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .fade-in{animation:fadeUp .5s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:880px){
+    .layout{grid-template-columns:1fr}
+    .side-area{position:static;order:1}
+    .main-area{order:2}
+    .bottom-grid{grid-template-columns:1fr}
+    .date-row{justify-content:space-between}
+  }
+  @media(max-width:560px){
+    .shell{padding:16px 12px 22px}
+    .topbar{flex-direction:column;gap:6px}
+    .brand{padding:0}
+    .day-strip{gap:5px}
+    .day-pill{padding:7px 3px}
+    .day-pill b{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Header -->
+  <header class="topbar fade-in">
+    <div class="title-block">
+      <h1>برنامه روزانه</h1>
+      <p>هر روز یک قدم جلوتر ✦</p>
+    </div>
+    <div class="brand">
+      <div class="brand-text">
+        <span>The Ascent</span><br/>
+        <span>Blueprint</span>
+      </div>
+      <div class="brand-logo"><i></i><i></i><i></i></div>
+    </div>
+  </header>
+
+  <!-- Real date + week + progress -->
+  <section class="date-card fade-in" style="animation-delay:.05s">
+    <div class="date-row">
+      <span class="date-label">تاریخ:</span>
+      <span class="date-value" id="dateValue" title="برای انتخاب تاریخ کلیک کنید"></span>
+      <button class="today-btn" id="todayBtn">امروز</button>
+      <div class="head-spacer"></div>
+      <button class="add-btn" id="openCalBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        تقویم
+      </button>
+    </div>
+
+    <div class="date-foot">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>پیشرفت امروز</span>
+          <span id="progressPct">۰٪</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+      </div>
+      <div class="progress-ring" id="progressRing"><span id="progressRingVal">۰٪</span></div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>تکمیل‌شده</span>
+          <span id="progressCount">۰ از ۰</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar2"></div></div>
+      </div>
+    </div>
+
+    <div class="day-strip" id="dayStrip"></div>
+  </section>
+
+  <!-- Main layout -->
+  <div class="layout">
+
+    <!-- Side: اولویت امروز -->
+    <aside class="side-area">
+      <section class="panel fade-in" style="animation-delay:.1s" id="focusPanel">
+        <div class="panel-head">
+          <span class="accent"></span>
+          <h2 class="panel-title">اولویت امروز</h2>
+          <span class="count-badge" id="focusCount">۰</span>
+          <div class="head-spacer"></div>
+          <button class="add-btn" onclick="addFocus()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            افزودن
+          </button>
+        </div>
+        <div class="list-body" id="focusList"></div>
+      </section>
+    </aside>
+
+    <!-- Main: برنامه امروز -->
+    <section class="main-area">
+      <div class="panel fade-in" style="animation-delay:.12s">
+        <div class="panel-head">
+          <span class="accent"></span>
+          <h2 class="panel-title">برنامه امروز</h2>
+          <span class="count-badge" id="programCount">۰</span>
+          <div class="head-spacer"></div>
+          <button class="add-btn" onclick="addItem('program')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            افزودن برنامه
+          </button>
+        </div>
+        <div class="list-body" id="programList"></div>
+      </div>
+
+      <div class="bottom-grid">
+        <!-- اولویت کارها -->
+        <section class="panel fade-in" style="animation-delay:.16s">
+          <div class="panel-head">
+            <span class="accent"></span>
+            <h2 class="panel-title">اولویت کارها</h2>
+            <span class="count-badge" id="prioCount">۰</span>
+            <div class="head-spacer"></div>
+            <button class="add-btn" onclick="addItem('priorities')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              افزودن
+            </button>
+          </div>
+          <div class="list-body" id="prioList"></div>
+        </section>
+
+        <!-- اهداف امروز -->
+        <section class="panel fade-in" style="animation-delay:.2s">
+          <div class="panel-head">
+            <span class="accent"></span>
+            <h2 class="panel-title">اهداف امروز</h2>
+            <span class="count-badge" id="goalCount">۰</span>
+            <div class="head-spacer"></div>
+            <button class="add-btn" onclick="addItem('goals')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              افزودن
+            </button>
+          </div>
+          <div class="list-body" id="goalList"></div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <!-- Lessons -->
+  <section class="panel lessons-panel fade-in" style="animation-delay:.24s">
+    <div class="panel-head">
+      <span class="accent"></span>
+      <h2 class="panel-title">درس‌هایی که امروز گفتم</h2>
+      <span class="count-badge">نوشته‌ی روزانه</span>
+    </div>
+    <div class="paper-outer">
+      <div class="paper">
+        <div class="ruler"></div>
+        <div class="paper-content" id="lessonsContent" contenteditable="true" spellcheck="false"></div>
+      </div>
+      <div class="paper-footer">
+        <span id="lessonsCount">۰ کلمه</span>
+        <span>ذخیره‌ی خودکار ✍</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer fade-in" style="animation-delay:.3s">
+    <span>روز صفر تا قله ✦</span>
+    <span><b>THE ASCENT BLUEPRINT</b> · DAILY</span>
+  </footer>
+</div>
+
+<!-- Calendar modal -->
+<div class="modal-veil" id="modal">
+  <div class="modal">
+    <div class="cal-head">
+      <span class="cal-title" id="calTitle"></span>
+      <div class="cal-nav">
+        <button class="icon-btn round" id="calPrev" title="ماه قبل">‹</button>
+        <button class="icon-btn round" id="calNext" title="ماه بعد">›</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-foot">
+      <button class="today-btn" id="calToday">برو به امروز</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ Constants ============ */
+const STORAGE_KEY = 'ascent_daily_v1';
+const WEEK_FA = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const MONTH_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+const DEFAULT_FOCUS = [
+  {id:'f1', cat:'مطالعه',        icon:'📖', value:'', done:false},
+  {id:'f2', cat:'تسک رشد فردی',   icon:'🚀', value:'', done:false},
+  {id:'f3', cat:'تمرین / یادداشت', icon:'✍️', value:'', done:false}
+];
+
+/* ============ State ============ */
+const today = new Date();
+let selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+let calendarDate = new Date(selectedDate.getTime());
+let data = blankData();
+
+function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
+function iso(d){
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function blankData(){
+  return {
+    program:[],
+    priorities:[],
+    goals:[],
+    focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)),
+    lessons:''
+  };
+}
+function key(section, date){ return `${STORAGE_KEY}:${iso(date)}:${section}`; }
+
+function loadData(){
+  const saved = localStorage.getItem(key('all', selectedDate));
+  if(saved){ try{ data = Object.assign(blankData(), JSON.parse(saved)); }catch(e){ data = blankData(); } }
+  else { data = blankData(); }
+}
+function saveData(){
+  localStorage.setItem(key('all', selectedDate), JSON.stringify(data));
+}
+function persist(render=true){
+  saveData();
+  if(render) renderAll();
+}
+
+/* ============ Date helpers ============ */
+function faNumber(n){ return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+function faDateLong(d){
+  return new Intl.DateTimeFormat('fa-IR',{weekday:'long', day:'numeric', month:'long', year:'numeric'}).format(d);
+}
+function startOfWeek(d){
+  const day = d.getDay(); // 0=Sun ... 6=Sat
+  const offset = (day + 1) % 7; // 0 for Sat
+  const s = new Date(d);
+  s.setDate(d.getDate() - offset);
+  s.setHours(0,0,0,0);
+  return s;
+}
+function sameDay(a,b){ return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+function parseISO(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+
+/* ============ Render core ============ */
+function renderDateBar(){
+  document.getElementById('dateValue').textContent = faDateLong(selectedDate);
+  renderDayStrip();
+  renderCalendar();
+}
+
+function renderDayStrip(){
+  const wrap = document.getElementById('dayStrip');
+  wrap.innerHTML = '';
+  const start = startOfWeek(selectedDate);
+  for(let i=0;i<7;i++){
+    const d = new Date(start); d.setDate(start.getDate()+i);
+    const btn = document.createElement('button');
+    btn.className = 'day-pill' + (sameDay(d,selectedDate)?' active':'') + (sameDay(d,today)?' is-today':'');
+    btn.innerHTML = `<b>${WEEK_FA[i]}</b><small>${faNumber(d.getDate()+' '+MONTH_FA[d.getMonth()])}</small>`;
+    btn.onclick = () => { selectDate(new Date(d)); };
+    wrap.appendChild(btn);
+  }
+}
+
+function renderCalendar(){
+  const title = document.getElementById('calTitle');
+  title.textContent = `${MONTH_FA[calendarDate.getMonth()]} ${faNumber(calendarDate.getFullYear())}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  WEEK_FA.forEach(w=>{
+    const el = document.createElement('div');
+    el.className='cal-dow'; el.textContent=w;
+    grid.appendChild(el);
+  });
+  const first = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+  const start = startOfWeek(first);
+  for(let i=0;i<42;i++){
+    const d = new Date(start); d.setDate(start.getDate()+i);
+    const btn = document.createElement('button');
+    btn.className = 'cal-day';
+    if(d.getMonth()!==calendarDate.getMonth()) btn.classList.add('dim');
+    if(sameDay(d,today)) btn.classList.add('today');
+    if(sameDay(d,selectedDate)) btn.classList.add('selected');
+    btn.textContent = faNumber(d.getDate());
+    btn.onclick = ()=> selectDate(new Date(d));
+    grid.appendChild(btn);
+  }
+}
+
+function selectDate(d){
+  selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  calendarDate = new Date(selectedDate);
+  closeModal();
+  loadData();
+  renderDateBar();
+  renderAll();
+  toast('تاریخ تغییر کرد ✦');
+}
+
+function openModal(){
+  calendarDate = new Date(selectedDate);
+  renderCalendar();
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+/* ============ Generic todo list ============ */
+function addItem(list, extra={}){
+  data[list].push(Object.assign({id:uid(), text:'', done:false, time:''}, extra));
+  persist();
+  requestAnimationFrame(()=>{
+    const listId = list==='program'?'programList':list==='priorities'?'prioList':'goalList';
+    const inputs = document.querySelectorAll(`#${listId} .todo-input`);
+    if(inputs.length) inputs[inputs.length-1].focus();
+  });
+}
+function updateItem(list, id, patch){
+  const it = data[list].find(x=>x.id===id);
+  if(it){ Object.assign(it,patch); persist(); }
+}
+function toggleItem(list, id){
+  const it = data[list].find(x=>x.id===id);
+  if(it){ it.done=!it.done; persist(); }
+}
+function removeItem(list, id){
+  data[list] = data[list].filter(x=>x.id!==id);
+  persist();
+}
+
+function renderList(list, containerId, countId, opts={}){
+  const items = data[list];
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = '';
+
+  if(items.length===0){
+    const empty = document.createElement('div');
+    empty.className='empty';
+    empty.innerHTML = `<div>${opts.empty || 'هنوز موردی اضافه نکرده‌اید.'}</div>
+      <button onclick="addItem('${list}')">+ افزودن اولین مورد</button>`;
+    wrap.appendChild(empty);
+  } else {
+    items.forEach((item, idx)=>{
+      const row = document.createElement('div');
+      row.className = 'todo-row' + (item.done?' done':'');
+      row.dataset.id = item.id;
+      row.dataset.list = list;
+      if(item.id.startsWith('new_')) row.dataset.new = '1';
+      row.innerHTML = `
+        <button class="check" onclick="toggleItem('${list}','${item.id}')" aria-label="تکمیل">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+        <div class="row-body">
+          ${opts.withTime? `<span class="time-chip"><input type="time" value="${item.time||''}" onchange="updateItem('${list}','${item.id}',{time:this.value})" /></span>`:''}
+          <input class="todo-input" value="${escapeAttr(item.text)}" placeholder="${opts.placeholder||'یک کار بنویسید...'}"
+            oninput="updateItemLive('${list}','${item.id}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn" title="ویرایش" onclick="focusRow(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+          <button class="icon-btn del" title="حذف" onclick="removeItem('${list}','${item.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
+        </div>`;
+      wrap.appendChild(row);
+    });
+  }
+  const done = items.filter(x=>x.done).length;
+  document.getElementById(countId).textContent = `${faNumber(done)}/${faNumber(items.length)}`;
+}
+
+/* live input update (without full re-render, keeps focus) */
+function updateItemLive(list, id, text){
+  const it = data[list].find(x=>x.id===id);
+  if(it && it.text!==text){ it.text=text; persist(false); }
+}
+function focusRow(btn){
+  const row = btn.closest('.todo-row');
+  const inp = row.querySelector('.todo-input');
+  if(inp){ inp.focus(); inp.select(); }
+}
+
+/* ============ Focus (اولویت امروز) ============ */
+function addFocus(){
+  data.focus.push({id:uid(), cat:'دسته جدید', icon:'✨', value:'', done:false});
+  persist();
+  const rows = document.querySelectorAll('#focusList .focus-row');
+  if(rows.length){ rows[rows.length-1].querySelector('.focus-cat input').focus(); }
+}
+function renderFocus(){
+  const wrap = document.getElementById('focusList');
+  wrap.innerHTML='';
+  data.focus.forEach((item, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'focus-row' + (item.done?' done':'');
+    row.rowId = item.id;
+    row.innerHTML = `
+      <button class="check" onclick="toggleFocus('${item.id}')" aria-label="تکمیل">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+      <div class="focus-cat">
+        <span>${item.icon||'✨'}</span>
+        <input value="${escapeAttr(item.cat)}" placeholder="عنوان" oninput="updateFocus('${item.id}','cat',this.value)" />
+      </div>
+      <div class="dots-line">
+        <input value="${escapeAttr(item.value)}" placeholder="............" oninput="updateFocus('${item.id}','value',this.value)" />
+      </div>
+      <div class="row-actions">
+        <button class="icon-btn" title="ویرایش" onclick="this.closest('.focus-row').querySelector('.dots-line input').focus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+        <button class="icon-btn del" title="حذف" onclick="removeFocus('${item.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
+      </div>`;
+    wrap.appendChild(row);
+  });
+  const done = data.focus.filter(x=>x.done).length;
+  document.getElementById('focusCount').textContent = `${faNumber(done)}/${faNumber(data.focus.length)}`;
+}
+function toggleFocus(id){
+  const it = data.focus.find(x=>x.id===id);
+  if(it){ it.done=!it.done; persist(); }
+}
+function updateFocus(id, field, val){
+  const it = data.focus.find(x=>x.id===id);
+  if(it && it[field]!==val){ it[field]=val; persist(false); renderFocusCount(); }
+}
+function removeFocus(id){
+  data.focus = data.focus.filter(x=>x.id!==id);
+  persist();
+}
+function renderFocusCount(){
+  const done = data.focus.filter(x=>x.done).length;
+  document.getElementById('focusCount').textContent = `${faNumber(done)}/${faNumber(data.focus.length)}`;
+}
+
+/* ============ Lessons ============ */
+function renderLessons(){
+  document.getElementById('lessonsContent').innerText = data.lessons || '';
+  updateLessonCount();
+}
+function updateLessonCount(){
+  const text = (document.getElementById('lessonsContent').innerText||'').trim();
+  const words = text? text.split(/\s+/).length : 0;
+  document.getElementById('lessonsCount').textContent = `${faNumber(words)} کلمه`;
+}
+
+/* ============ Progress ============ */
+function renderProgress(){
+  const lists = [data.program, data.priorities, data.goals, data.focus];
+  const total = lists.reduce((s,l)=>s+l.length,0);
+  const done = lists.reduce((s,l)=>s+l.filter(x=>x.done).length,0);
+  const pct = total? Math.round(done/total*100):0;
+  const pctFa = faNumber(pct);
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('progressBar2').style.width = pct+'%';
+  document.getElementById('progressRing').style.setProperty('--p', pct);
+  document.getElementById('progressPct').textContent = pctFa+'٪';
+  document.getElementById('progressRingVal').textContent = pctFa+'٪';
+  document.getElementById('progressCount').textContent = `${faNumber(done)} از ${faNumber(total)}`;
+}
+
+/* ============ Render all ============ */
+function renderAll(){
+  renderDateBar();
+  renderList('program','programList','programCount',{withTime:true, empty:'برنامه‌ی امروز خالی است.', placeholder:'افزودن کار یا برنامه...'});
+  renderList('priorities','prioList','prioCount',{empty:'اولویت کاری ثبت نشده.', placeholder:'افزودن اولویت کار...'});
+  renderList('goals','goalList','goalCount',{empty:'هنوز هدفی برای امروز ثبت نشده.', placeholder:'افزودن هدف امروز...'});
+  renderFocus();
+  renderLessons();
+  renderProgress();
+}
+
+/* ============ Utils ============ */
+function escapeAttr(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'),1800);
+}
+
+/* ============ Init & events ============ */
+document.getElementById('dateValue').addEventListener('click', openModal);
+document.getElementById('openCalBtn').addEventListener('click', openModal);
+document.getElementById('todayBtn').addEventListener('click', ()=> selectDate(new Date(today)));
+document.getElementById('calToday').addEventListener('click', ()=> selectDate(new Date(today)));
+document.getElementById('calPrev').addEventListener('click', ()=>{ calendarDate.setMonth(calendarDate.getMonth()-1); renderCalendar(); });
+document.getElementById('calNext').addEventListener('click', ()=>{ calendarDate.setMonth(calendarDate.getMonth()+1); renderCalendar(); });
+document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') closeModal(); });
+
+document.getElementById('lessonsContent').addEventListener('input', (e)=>{
+  data.lessons = e.target.innerText;
+  persist(false);
+  updateLessonCount();
+});
+
+window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+loadData();
+renderAll();
+</script>
+</body>
+</html>
