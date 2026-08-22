@@ -263,25 +263,27 @@
   .list-body{padding:4px 16px 18px}
 
   /* Planner grid for برنامه امروز (like the original design) */
-  .planner{padding:4px 18px 18px;position:relative}
+  .planner{padding:6px 20px 20px;position:relative}
   .planner-row{
-    display:grid;grid-template-columns:38px 1fr;
+    display:grid;grid-template-columns:42px 1fr;
+    direction:ltr;
     border-bottom:1px solid rgba(148,120,255,.16);
-    min-height:72px;padding:0;
+    min-height:78px;padding:0;
     animation:rowIn .28s ease;
   }
   .planner-row:last-child{border-bottom:none}
   .planner-num{
     display:flex;align-items:center;justify-content:center;
-    border-left:1px solid rgba(148,120,255,.30);
+    border-right:1px solid rgba(148,120,255,.30);
     background:linear-gradient(90deg,rgba(139,92,246,.07),transparent);
-    color:#b18aff;font-size:14px;font-weight:800;
+    color:#c9b4ff;font-size:16px;font-weight:800;
   }
   .planner-body{
-    display:flex;align-items:center;gap:12px;min-width:0;
-    padding:10px 14px;
+    display:flex;align-items:center;gap:14px;min-width:0;
+    direction:rtl;
+    padding:12px 18px;
   }
-  .planner-body .todo-input{font-size:15.5px}
+  .planner-body .todo-input{font-size:17px}
   .planner .empty{margin:0}
   .empty{
     text-align:center;color:var(--dim);font-size:13px;padding:26px 10px;
@@ -329,8 +331,8 @@
   }
   .todo-row.done .todo-input{color:#8f86ba;text-decoration:line-through}
   .row-num{
-    width:24px;text-align:center;font-size:13px;font-weight:800;color:#b18aff;
-    flex-shrink:0;
+    width:26px;min-width:26px;text-align:center;font-size:14px;font-weight:800;
+    color:#c9b4ff;flex-shrink:0;
   }
 
   .row-actions{display:flex;gap:4px;opacity:0;transform:translateX(6px);transition:.18s}
@@ -811,7 +813,6 @@ function renderList(list, containerId, countId, opts={}){
           </div>`;
       } else {
         row.innerHTML = `
-          ${opts.numbered ? `<span class="row-num">${faNumber(idx+1)}</span>` : ''}
           <button class="check" onclick="toggleItem('${list}','${item.id}')" aria-label="تکمیل">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </button>
@@ -819,7 +820,8 @@ function renderList(list, containerId, countId, opts={}){
             <input class="todo-input" value="${escapeAttr(item.text)}" placeholder=""
               oninput="updateItemLive('${list}','${item.id}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />
           </div>
-          ${actions}`;
+          ${actions}
+          ${opts.numbered ? `<span class="row-num">${faNumber(idx+1)}</span>` : ''}`;
       }
       wrap.appendChild(row);
     });
