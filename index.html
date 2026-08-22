@@ -229,6 +229,33 @@
 
   /* ---------- Todos ---------- */
   .list-body{padding:4px 16px 18px}
+
+  /* Planner grid for برنامه امروز (like the original design) */
+  .planner{padding:4px 18px 18px;position:relative}
+  .planner-row{
+    display:grid;grid-template-columns:64px 1fr;gap:2px;
+    border-bottom:1px solid rgba(148,120,255,.16);
+    min-height:64px;padding:0;
+    animation:rowIn .28s ease;
+  }
+  .planner-row:last-child{border-bottom:none}
+  .planner-pillar{
+    border-left:1px solid rgba(148,120,255,.28);
+    display:flex;align-items:center;justify-content:center;
+    padding:8px 6px;
+  }
+  .planner-body{
+    display:flex;align-items:center;gap:12px;min-width:0;
+    padding:10px 12px;
+  }
+  .planner-body .todo-input{font-size:15px}
+  .planner .empty{margin:0}
+  .time-editor{
+    font-family:inherit;font-size:11px;font-weight:700;color:#cfc4ff;
+    background:rgba(139,92,246,.12);border:1px solid rgba(148,120,255,.25);
+    border-radius:8px;padding:3px 5px;text-align:center;direction:ltr;cursor:pointer;
+  }
+  .time-editor::-webkit-calendar-picker-indicator{filter:invert(.8);cursor:pointer}
   .empty{
     text-align:center;color:var(--dim);font-size:13px;padding:26px 10px;
     border:1px dashed rgba(148,120,255,.28);border-radius:16px;margin:4px;
@@ -534,7 +561,7 @@
             افزودن برنامه
           </button>
         </div>
-        <div class="list-body" id="programList"></div>
+        <div class="list-body planner" id="programList"></div>
       </div>
 
       <div class="bottom-grid">
@@ -617,7 +644,7 @@
 
 <script>
 /* ============ Constants ============ */
-const STORAGE_KEY = 'ascent_daily_v1';
+const STORAGE_KEY = 'ascent_daily_v2';
 const WEEK_FA = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 const MONTH_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 
@@ -638,11 +665,21 @@ function iso(d){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
 }
+function blankItem(){ return {id:uid(), text:'', done:false, time:''}; }
 function blankData(){
-  return {
+  const seeded = {
     program:[],
     priorities:[],
-    goals:[],
+    goals:[]
+  };
+  // همان خط‌های خالی عکس: هر کدام یک تسک/تودوی قابل تیک‌زدن است
+  for(let i=0;i<6;i++) seeded.program.push(blankItem());
+  for(let i=0;i<5;i++) seeded.priorities.push(blankItem());
+  for(let i=0;i<4;i++) seeded.goals.push(blankItem());
+  return {
+    program: seeded.program,
+    priorities: seeded.priorities,
+    goals: seeded.goals,
     focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)),
     lessons:''
   };
@@ -780,23 +817,44 @@ function renderList(list, containerId, countId, opts={}){
   } else {
     items.forEach((item, idx)=>{
       const row = document.createElement('div');
-      row.className = 'todo-row' + (item.done?' done':'');
+      const baseClass = 'todo-row' + (item.done?' done':'');
+      row.className = opts.planner ? `${baseClass} planner-row` : baseClass;
       row.dataset.id = item.id;
       row.dataset.list = list;
-      if(item.id.startsWith('new_')) row.dataset.new = '1';
-      row.innerHTML = `
-        <button class="check" onclick="toggleItem('${list}','${item.id}')" aria-label="تکمیل">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </button>
-        <div class="row-body">
-          ${opts.withTime? `<span class="time-chip"><input type="time" value="${item.time||''}" onchange="updateItem('${list}','${item.id}',{time:this.value})" /></span>`:''}
-          <input class="todo-input" value="${escapeAttr(item.text)}" placeholder="${opts.placeholder||'یک کار بنویسید...'}"
-            oninput="updateItemLive('${list}','${item.id}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />
-        </div>
+
+      const actions = `
         <div class="row-actions">
           <button class="icon-btn" title="ویرایش" onclick="focusRow(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
           <button class="icon-btn del" title="حذف" onclick="removeItem('${list}','${item.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
         </div>`;
+
+      if(opts.planner){
+        row.innerHTML = `
+          <div class="planner-pillar">
+            ${opts.withTime? `<input class="time-editor" type="time" value="${item.time||''}" title="ساعت اختیاری" onchange="updateItem('${list}','${item.id}',{time:this.value})" />`:''}
+          </div>
+          <div class="planner-body">
+            <button class="check" onclick="toggleItem('${list}','${item.id}')" aria-label="تکمیل">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <div class="row-body">
+              <input class="todo-input" value="${escapeAttr(item.text)}" placeholder="${opts.placeholder||'یک کار بنویسید...'}"
+                oninput="updateItemLive('${list}','${item.id}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />
+            </div>
+            ${actions}
+          </div>`;
+      } else {
+        row.innerHTML = `
+          <button class="check" onclick="toggleItem('${list}','${item.id}')" aria-label="تکمیل">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <div class="row-body">
+            ${opts.withTime? `<span class="time-chip"><input type="time" value="${item.time||''}" onchange="updateItem('${list}','${item.id}',{time:this.value})" /></span>`:''}
+            <input class="todo-input" value="${escapeAttr(item.text)}" placeholder="${opts.placeholder||'یک کار بنویسید...'}"
+              oninput="updateItemLive('${list}','${item.id}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />
+          </div>
+          ${actions}`;
+      }
       wrap.appendChild(row);
     });
   }
@@ -895,7 +953,7 @@ function renderProgress(){
 /* ============ Render all ============ */
 function renderAll(){
   renderDateBar();
-  renderList('program','programList','programCount',{withTime:true, empty:'برنامه‌ی امروز خالی است.', placeholder:'افزودن کار یا برنامه...'});
+  renderList('program','programList','programCount',{planner:true, withTime:true, empty:'برنامه‌ی امروز خالی است.', placeholder:'افزودن کار یا برنامه...'});
   renderList('priorities','prioList','prioCount',{empty:'اولویت کاری ثبت نشده.', placeholder:'افزودن اولویت کار...'});
   renderList('goals','goalList','goalCount',{empty:'هنوز هدفی برای امروز ثبت نشده.', placeholder:'افزودن هدف امروز...'});
   renderFocus();
