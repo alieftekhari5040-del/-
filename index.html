@@ -265,25 +265,27 @@
   /* Planner grid for برنامه امروز (like the original design) */
   .planner{padding:6px 20px 20px;position:relative}
   .planner-row{
-    display:grid;grid-template-columns:42px 1fr;
-    direction:ltr;
+    display:flex;align-items:stretch;direction:rtl;
     border-bottom:1px solid rgba(148,120,255,.16);
-    min-height:78px;padding:0;
+    min-height:84px;padding:0;
     animation:rowIn .28s ease;
   }
   .planner-row:last-child{border-bottom:none}
   .planner-num{
+    order:2;width:48px;flex:0 0 48px;
     display:flex;align-items:center;justify-content:center;
-    border-right:1px solid rgba(148,120,255,.30);
-    background:linear-gradient(90deg,rgba(139,92,246,.07),transparent);
-    color:#c9b4ff;font-size:16px;font-weight:800;
+    border-left:1px solid rgba(148,120,255,.30);
+    background:linear-gradient(270deg,rgba(139,92,246,.07),transparent);
+    color:#c9b4ff;font-size:17px;font-weight:800;
   }
   .planner-body{
-    display:flex;align-items:center;gap:14px;min-width:0;
-    direction:rtl;
-    padding:12px 18px;
+    flex:1;min-width:0;direction:rtl;
+    display:flex;align-items:center;gap:16px;
+    padding:14px 22px;
   }
-  .planner-body .todo-input{font-size:17px}
+  .planner-body > .check{flex-shrink:0}
+  .planner-body > .row-body{flex:1;min-width:0}
+  .planner-body .todo-input{font-size:17px;line-height:1.7}
   .planner .empty{margin:0}
   .empty{
     text-align:center;color:var(--dim);font-size:13px;padding:26px 10px;
