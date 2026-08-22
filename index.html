@@ -158,77 +158,114 @@
 
   /* ---------- Date card + calendar ---------- */
   .date-card{
-    display:flex;flex-direction:column;gap:16px;
-    margin-bottom:22px;padding:20px 22px 18px;
+    padding:24px 26px 20px;
+    border-radius:26px;
+    background:
+      linear-gradient(160deg,rgba(44,33,102,.82),rgba(14,10,40,.78));
+    border:1px solid rgba(168,138,255,.42);
+    box-shadow:
+      0 0 0 1px rgba(168,138,255,.07),
+      0 0 60px rgba(88,28,180,.25),
+      inset 0 1px 0 rgba(255,255,255,.07);
   }
-  .date-card{padding:22px 24px 18px}
+  .date-card::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:
+      radial-gradient(520px 120px at 12% -10%,rgba(216,180,254,.16),transparent 70%),
+      radial-gradient(520px 130px at 88% -10%,rgba(168,85,247,.16),transparent 70%);
+  }
   .date-line{
+    position:relative;
     display:flex;align-items:center;gap:20px;
   }
   .date-row{
-    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-    flex:1;min-width:260px;padding-top:2px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    flex:1;min-width:280px;padding-top:2px;
   }
-  .day-strip{flex:1.35}
   .date-label{
-    font-size:18px;font-weight:800;color:var(--violet-2);
-    text-shadow:0 0 16px rgba(168,85,247,.5);
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:20px;font-weight:900;color:#e9deff;
+    text-shadow:0 0 22px rgba(196,166,255,.55);
+  }
+  .date-label::before{
+    content:"📅";font-size:19px;filter:drop-shadow(0 0 8px rgba(168,85,247,.7));
   }
   .date-value{
-    font-size:clamp(17px,2.2vw,22px);font-weight:700;color:#fff;
-    cursor:pointer;border-bottom:1px dashed rgba(148,120,255,.5);
-    padding-bottom:2px;transition:color .2s;
+    font-size:clamp(18px,2vw,23px);font-weight:800;color:#fff;
+    cursor:pointer;border-bottom:2px dashed rgba(196,166,255,.5);
+    padding-bottom:3px;transition:color .2s,border-color .2s;
+    letter-spacing:.2px;
   }
-  .date-value:hover{color:#d9c8ff}
+  .date-value:hover{color:#d9c8ff;border-color:#c4a6ff}
   .today-btn{
-    font-family:inherit;font-size:12px;font-weight:700;color:#e9ddff;
-    background:rgba(139,92,246,.16);border:1px solid rgba(148,120,255,.32);
-    padding:6px 13px;border-radius:30px;cursor:pointer;transition:.2s;
+    font-family:inherit;font-size:12.5px;font-weight:800;color:#f4ecff;
+    background:linear-gradient(135deg,rgba(168,85,247,.28),rgba(109,40,217,.28));
+    border:1px solid rgba(196,166,255,.42);
+    padding:7px 15px;border-radius:30px;cursor:pointer;transition:.2s;
+    box-shadow:0 0 16px rgba(139,92,246,.25);
   }
-  .today-btn:hover{background:rgba(139,92,246,.34)}
+  .today-btn:hover{background:linear-gradient(135deg,rgba(168,85,247,.5),rgba(109,40,217,.5));transform:translateY(-1px)}
 
+  .day-strip{flex:1.6;position:relative}
   .day-strip{
     display:grid;grid-template-columns:repeat(7,1fr);gap:10px;
     direction:ltr;
   }
   .day-pill{
+    position:relative;
     font-family:inherit;cursor:pointer;
-    background:rgba(255,255,255,.04);border:1px solid var(--border-soft);
-    color:var(--muted);border-radius:14px;
-    padding:9px 6px;text-align:center;transition:.2s;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid rgba(168,138,255,.20);
+    color:var(--muted);border-radius:18px;
+    padding:12px 6px;text-align:center;transition:.22s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    overflow:hidden;
   }
-  .day-pill small{display:block;font-size:11px;opacity:.75;margin-top:2px;font-weight:500}
-  .day-pill b{font-size:14px;font-weight:800;display:block}
-  .day-pill:hover{border-color:var(--violet-2);color:#fff;transform:translateY(-2px)}
+  .day-pill small{display:block;font-size:11px;opacity:.78;margin-top:4px;font-weight:600}
+  .day-pill b{font-size:14.5px;font-weight:900;display:block;letter-spacing:.3px}
+  .day-pill:hover{border-color:rgba(196,166,255,.55);color:#fff;transform:translateY(-3px);box-shadow:0 10px 24px rgba(88,28,180,.28)}
   .day-pill.active{
-    background:linear-gradient(135deg,rgba(168,85,247,.9),rgba(109,40,217,.9));
-    border-color:#c4a6ff;color:#fff;
-    box-shadow:0 8px 24px rgba(124,58,237,.5);
+    background:linear-gradient(150deg,#7c3aed,#a855f7 55%,#6d28d9);
+    border-color:#d0b3ff;color:#fff;
+    box-shadow:0 12px 30px rgba(124,58,237,.55),inset 0 1px 0 rgba(255,255,255,.25);
+    transform:translateY(-2px);
   }
-  .day-pill.is-today{outline:1px solid rgba(57,217,138,.55);outline-offset:2px}
+  .day-pill.active::after{
+    content:"";position:absolute;left:20%;right:20%;bottom:-4px;height:5px;
+    border-radius:50%;background:#e9d5ff;filter:blur(7px);opacity:.9;
+  }
+  .day-pill.is-today{outline:1px solid rgba(57,217,138,.6);outline-offset:2px}
 
   .date-foot{
-    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    position:relative;
+    display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;
+    margin-top:20px;padding-top:18px;
+    border-top:1px solid rgba(168,138,255,.16);
   }
-  .progress-wrap{flex:1;min-width:220px}
-  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:600}
-  .progress-bar{height:9px;border-radius:30px;background:rgba(255,255,255,.06);overflow:hidden}
+  .progress-wrap{min-width:0}
+  .progress-label{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#cfc4ff;margin-bottom:8px;font-weight:700}
+  .progress-label .prog-num{font-size:14px;font-weight:900;color:#fff;text-shadow:0 0 12px rgba(168,85,247,.55)}
+  .progress-bar{height:11px;border-radius:30px;background:rgba(255,255,255,.07);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.35)}
   .progress-fill{
     height:100%;width:0;border-radius:30px;
-    background:linear-gradient(90deg,#39d98a,#7c3aed,#a855f7);
-    box-shadow:0 0 14px rgba(57,217,138,.6);
+    background:linear-gradient(90deg,#39d98a,#7c3aed,#a855f7,#f0abfc);
+    background-size:200% 100%;
+    box-shadow:0 0 18px rgba(168,85,247,.7);
     transition:width .5s ease;
+  }
+  .progress-center{
+    display:grid;place-items:center;flex-shrink:0;
   }
   .progress-ring{
     --p:0;
     position:relative;
-    width:46px;height:46px;border-radius:50%;
-    background:conic-gradient(#a855f7 calc(var(--p)*1%),rgba(255,255,255,.08) 0);
-    display:grid;place-items:center;flex-shrink:0;
-    box-shadow:0 0 18px rgba(168,85,247,.4);
+    width:58px;height:58px;border-radius:50%;
+    background:conic-gradient(#c084fc calc(var(--p)*1%),rgba(255,255,255,.10) 0);
+    display:grid;place-items:center;
+    box-shadow:0 0 26px rgba(168,85,247,.5),inset 0 0 12px rgba(168,85,247,.25);
   }
-  .progress-ring::before{content:"";position:absolute;width:38px;height:38px;border-radius:50%;background:#100d2c}
-  .progress-ring span{position:relative;font-size:11px;font-weight:800;color:#fff;z-index:1}
+  .progress-ring::before{content:"";position:absolute;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#241a55,#0e0a2c)}
+  .progress-ring span{position:relative;font-size:12px;font-weight:900;color:#fff;z-index:1;text-shadow:0 0 10px rgba(168,85,247,.7)}
 
   /* ---------- Layout ---------- */
   .layout{
@@ -461,8 +498,11 @@
   @media(max-width:880px){
     .bottom-grid{grid-template-columns:1fr}
     .program-bottom{grid-template-columns:1fr}
-    .date-line{flex-direction:column;align-items:flex-start}
-    .day-strip{width:100%;margin-top:2px}
+    .date-line{flex-direction:column;align-items:stretch;gap:16px}
+    .date-row{width:100%}
+    .day-strip{width:100%}
+    .date-foot{grid-template-columns:1fr;gap:14px}
+    .progress-center{justify-self:center}
   }
   @media(max-width:560px){
     .shell{padding:16px 12px 22px}
@@ -513,15 +553,17 @@
       <div class="progress-wrap">
         <div class="progress-label">
           <span>پیشرفت امروز</span>
-          <span id="progressPct">۰٪</span>
+          <span class="prog-num" id="progressPct">۰٪</span>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
       </div>
-      <div class="progress-ring" id="progressRing"><span id="progressRingVal">۰٪</span></div>
+      <div class="progress-center">
+        <div class="progress-ring" id="progressRing"><span id="progressRingVal">۰٪</span></div>
+      </div>
       <div class="progress-wrap">
         <div class="progress-label">
           <span>تکمیل‌شده</span>
-          <span id="progressCount">۰ از ۰</span>
+          <span class="prog-num" id="progressCount">۰ از ۰</span>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressBar2"></div></div>
       </div>
