@@ -218,10 +218,9 @@
 
   /* ---------- Layout ---------- */
   .layout{
-    display:grid;grid-template-columns:330px 1fr;gap:22px;align-items:start;
+    display:block;
   }
   .main-area{display:flex;flex-direction:column;gap:22px;min-width:0}
-  .side-area{position:sticky;top:20px;display:flex;flex-direction:column;gap:22px}
 
   .bottom-grid{
     display:grid;grid-template-columns:1fr 1fr;gap:22px;
@@ -319,34 +318,6 @@
   .icon-btn svg{width:14px;height:14px}
   .icon-btn:hover{color:#fff;background:rgba(139,92,246,.22);border-color:var(--border)}
   .icon-btn.del:hover{color:#ffb3c0;background:rgba(244,63,94,.22);border-color:rgba(244,63,94,.4)}
-
-  /* ---------- Focus list (اولویت امروز) ---------- */
-  .focus-row{
-    display:flex;align-items:center;gap:12px;padding:13px 6px;
-    border-bottom:1px solid rgba(148,120,255,.14);
-    animation:rowIn .28s ease;
-  }
-  .focus-row:last-child{border-bottom:none}
-  .focus-cat{
-    display:flex;align-items:center;gap:8px;min-width:120px;
-  }
-  .focus-cat input{
-    font-family:inherit;font-size:12.5px;font-weight:700;color:#ff7a97;
-    background:transparent;border:none;outline:none;width:100%;
-  }
-  .focus-cat svg{width:17px;height:17px;color:#b18aff;flex-shrink:0}
-  .dots-line{
-    flex:1;min-width:0;
-    background-image:radial-gradient(circle, rgba(190,160,255,.55) 1.4px, transparent 1.6px);
-    background-size:9px 9px;background-repeat:repeat-x;background-position:0 53%;
-    height:20px;display:flex;align-items:center;
-  }
-  .dots-line input{
-    background:transparent;border:none;outline:none;width:100%;
-    font-family:inherit;font-size:13px;font-weight:600;color:#e9e2ff;padding:0 4px;
-  }
-  .focus-row.done .focus-cat input{text-decoration:line-through;color:#8f86ba}
-  .focus-row.done .dots-line input{text-decoration:line-through;color:#8f86ba}
 
   /* ---------- Lessons (lined paper) ---------- */
   .lessons-panel{margin-top:22px}
@@ -459,9 +430,6 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:880px){
-    .layout{grid-template-columns:1fr}
-    .side-area{position:static;order:1}
-    .main-area{order:2}
     .bottom-grid{grid-template-columns:1fr}
     .date-row{justify-content:space-between}
   }
@@ -530,23 +498,6 @@
 
   <!-- Main layout -->
   <div class="layout">
-
-    <!-- Side: اولویت امروز -->
-    <aside class="side-area">
-      <section class="panel fade-in" style="animation-delay:.1s" id="focusPanel">
-        <div class="panel-head">
-          <span class="accent"></span>
-          <h2 class="panel-title">اولویت امروز</h2>
-          <span class="count-badge" id="focusCount">۰</span>
-          <div class="head-spacer"></div>
-          <button class="add-btn" onclick="addFocus()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            افزودن
-          </button>
-        </div>
-        <div class="list-body" id="focusList"></div>
-      </section>
-    </aside>
 
     <!-- Main: برنامه امروز -->
     <section class="main-area">
@@ -648,12 +599,6 @@ const STORAGE_KEY = 'ascent_daily_v2';
 const WEEK_FA = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 const MONTH_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 
-const DEFAULT_FOCUS = [
-  {id:'f1', cat:'مطالعه',        icon:'📖', value:'', done:false},
-  {id:'f2', cat:'تسک رشد فردی',   icon:'🚀', value:'', done:false},
-  {id:'f3', cat:'تمرین / یادداشت', icon:'✍️', value:'', done:false}
-];
-
 /* ============ State ============ */
 const today = new Date();
 let selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -680,7 +625,6 @@ function blankData(){
     program: seeded.program,
     priorities: seeded.priorities,
     goals: seeded.goals,
-    focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)),
     lessons:''
   };
 }
@@ -873,57 +817,6 @@ function focusRow(btn){
   if(inp){ inp.focus(); inp.select(); }
 }
 
-/* ============ Focus (اولویت امروز) ============ */
-function addFocus(){
-  data.focus.push({id:uid(), cat:'دسته جدید', icon:'✨', value:'', done:false});
-  persist();
-  const rows = document.querySelectorAll('#focusList .focus-row');
-  if(rows.length){ rows[rows.length-1].querySelector('.focus-cat input').focus(); }
-}
-function renderFocus(){
-  const wrap = document.getElementById('focusList');
-  wrap.innerHTML='';
-  data.focus.forEach((item, idx)=>{
-    const row = document.createElement('div');
-    row.className = 'focus-row' + (item.done?' done':'');
-    row.rowId = item.id;
-    row.innerHTML = `
-      <button class="check" onclick="toggleFocus('${item.id}')" aria-label="تکمیل">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      </button>
-      <div class="focus-cat">
-        <span>${item.icon||'✨'}</span>
-        <input value="${escapeAttr(item.cat)}" placeholder="عنوان" oninput="updateFocus('${item.id}','cat',this.value)" />
-      </div>
-      <div class="dots-line">
-        <input value="${escapeAttr(item.value)}" placeholder="............" oninput="updateFocus('${item.id}','value',this.value)" />
-      </div>
-      <div class="row-actions">
-        <button class="icon-btn" title="ویرایش" onclick="this.closest('.focus-row').querySelector('.dots-line input').focus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
-        <button class="icon-btn del" title="حذف" onclick="removeFocus('${item.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
-      </div>`;
-    wrap.appendChild(row);
-  });
-  const done = data.focus.filter(x=>x.done).length;
-  document.getElementById('focusCount').textContent = `${faNumber(done)}/${faNumber(data.focus.length)}`;
-}
-function toggleFocus(id){
-  const it = data.focus.find(x=>x.id===id);
-  if(it){ it.done=!it.done; persist(); }
-}
-function updateFocus(id, field, val){
-  const it = data.focus.find(x=>x.id===id);
-  if(it && it[field]!==val){ it[field]=val; persist(false); renderFocusCount(); }
-}
-function removeFocus(id){
-  data.focus = data.focus.filter(x=>x.id!==id);
-  persist();
-}
-function renderFocusCount(){
-  const done = data.focus.filter(x=>x.done).length;
-  document.getElementById('focusCount').textContent = `${faNumber(done)}/${faNumber(data.focus.length)}`;
-}
-
 /* ============ Lessons ============ */
 function renderLessons(){
   document.getElementById('lessonsContent').innerText = data.lessons || '';
@@ -937,7 +830,7 @@ function updateLessonCount(){
 
 /* ============ Progress ============ */
 function renderProgress(){
-  const lists = [data.program, data.priorities, data.goals, data.focus];
+  const lists = [data.program, data.priorities, data.goals];
   const total = lists.reduce((s,l)=>s+l.length,0);
   const done = lists.reduce((s,l)=>s+l.filter(x=>x.done).length,0);
   const pct = total? Math.round(done/total*100):0;
@@ -956,7 +849,6 @@ function renderAll(){
   renderList('program','programList','programCount',{planner:true, withTime:true, empty:'برنامه‌ی امروز خالی است.', placeholder:'افزودن کار یا برنامه...'});
   renderList('priorities','prioList','prioCount',{empty:'اولویت کاری ثبت نشده.', placeholder:'افزودن اولویت کار...'});
   renderList('goals','goalList','goalCount',{empty:'هنوز هدفی برای امروز ثبت نشده.', placeholder:'افزودن هدف امروز...'});
-  renderFocus();
   renderLessons();
   renderProgress();
 }
